@@ -31,8 +31,16 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <style>
+        html, body {
+            overflow-x: hidden;
+        }
+        body {
+            position: relative
+        }
+    </style>
 </head>
-<body class="min-h-screen flex flex-col" x-data="{ mobileMenu: false }">
+<body class="min-h-screen flex flex-col overflow-x-hidden" x-data="{ mobileMenu: false }">
     {{-- Skip to content for accessibility --}}
     <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:bg-primary focus:text-white focus:px-4 focus:py-2">
         Langsung ke isi
