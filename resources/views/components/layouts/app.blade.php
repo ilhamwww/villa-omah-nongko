@@ -24,7 +24,11 @@
     />
 
     {{-- Favicon --}}
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    @php
+        $setting = \App\Models\WebsiteSetting::first();
+        $faviconUrl = $setting && $setting->favicon ? asset('storage/' . $setting->favicon) : '/favicon.svg';
+    @endphp
+    <link rel="icon" type="image/svg+xml" href="{{ $faviconUrl }}">
 
     {{-- Preload hero font --}}
     <link rel="preconnect" href="https://fonts.googleapis.com">
