@@ -84,11 +84,9 @@
         <x-ui.icon name="arrow-up" class="w-6 h-6 block" />
     </button>
 
-    <!-- {{-- 
     <script src="{{ asset('smoothscroll/gsap.min.js') }}"></script>
     <script src="{{ asset('smoothscroll/ScrollTrigger.min.js') }}"></script>
     <script src="{{ asset('smoothscroll/ScrollSmoother.min.js') }}"></script>
-    --}} -->
     <script>
         // Mencegah browser melakukan native scroll jump yang merusak kalkulasi ScrollSmoother
         if ('scrollRestoration' in history) {
