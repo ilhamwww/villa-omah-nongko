@@ -70,22 +70,46 @@
 
     {{-- Galeri Villa dengan tab --}}
     <section class="py-section-md bg-bg-soft" aria-labelledby="galeri-villa-heading"
-             x-data="{ tab: 'all' }">
+             x-data="{ tab: 'all', filteredImages: [] }"
+             x-init="filteredImages = @js($kategoriGaleri)">
         <div class="container-site">
             <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 reveal-slide-up">
                 <h2 id="galeri-villa-heading" class="font-heading text-3xl md:text-4xl">Galeri Villa</h2>
                 <div class="flex gap-6 overflow-x-auto scrollbar-hide" role="tablist">
-                    @foreach(['all' => 'Semua', 'villa' => 'Villa', 'rooms' => 'Kamar', 'pool' => 'Kolam', 'surroundings' => 'Sekitar'] as $key => $label)
+                    <button type="button" role="tab"
+                            x-on:click="tab = 'all'"
+                            :class="tab === 'all' ? 'text-text-main border-b border-text-main' : 'text-text-muted'"
+                            class="pb-1 text-xs uppercase tracking-widenav whitespace-nowrap transition-colors">Semua</button>
+                    @foreach($kategoriGaleri as $kategori)
                         <button type="button" role="tab"
-                                x-on:click="tab = '{{ $key }}'"
-                                :class="tab === '{{ $key }}' ? 'text-text-main border-b border-text-main' : 'text-text-muted'"
-                                class="pb-1 text-xs uppercase tracking-widenav whitespace-nowrap transition-colors">{{ $label }}</button>
+                                x-on:click="tab = '{{ $kategori['slug'] }}'"
+                                :class="tab === '{{ $kategori['slug'] }}' ? 'text-text-main border-b border-text-main' : 'text-text-muted'"
+                                class="pb-1 text-xs uppercase tracking-widenav whitespace-nowrap transition-colors">{{ $kategori['nama'] }}</button>
                     @endforeach
                 </div>
             </div>
 
-            <div class="mt-8 reveal-scale-up delay-200">
-                <x-ui.gallery-mosaic :images="$fotoGaleri" />
+            <div class="mt-8 reveal-scale-up delay-200 relative min-h-[350px]">
+                <div x-show="tab === 'all'"
+                     x-transition:enter="transition ease-out duration-500"
+                     x-transition:enter-start="opacity-0 translate-y-4"
+                     x-transition:enter-end="opacity-100 translate-y-0"
+                     x-transition:leave="transition ease-in duration-300 absolute inset-0"
+                     x-transition:leave-start="opacity-100"
+                     x-transition:leave-end="opacity-0">
+                    <x-ui.gallery-mosaic :images="$fotoGaleri" />
+                </div>
+                @foreach($kategoriGaleri as $kategori)
+                    <div x-show="tab === '{{ $kategori['slug'] }}'" x-cloak
+                         x-transition:enter="transition ease-out duration-500"
+                         x-transition:enter-start="opacity-0 translate-y-4"
+                         x-transition:enter-end="opacity-100 translate-y-0"
+                         x-transition:leave="transition ease-in duration-300 absolute inset-0"
+                         x-transition:leave-start="opacity-100"
+                         x-transition:leave-end="opacity-0">
+                        <x-ui.gallery-mosaic :images="$kategori['daftarFoto']" />
+                    </div>
+                @endforeach
             </div>
         </div>
     </section>
