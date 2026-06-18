@@ -26,7 +26,7 @@
 
 <footer class="{{ $isDark ? 'bg-primary text-white' : 'bg-bg-soft text-text-main border-t border-border-light' }}">
     <div class="container-site py-section-md">
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1.2fr] gap-10 lg:gap-16">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1.2fr] gap-10 lg:gap-16">
             {{-- Brand --}}
             <div>
                 <span class="font-sparkle text-4xl normal-case">{{ $brand }}</span>
@@ -50,18 +50,6 @@
                 <h3 class="eyebrow {{ $isDark ? 'text-white/60' : '' }}">Jelajahi</h3>
                 <ul class="mt-5 space-y-3">
                     @foreach($jelajahi as $link)
-                        <li>
-                            <a href="{{ $link['url'] }}" class="text-sm {{ $isDark ? 'text-white/70 hover:text-white' : 'text-text-muted hover:text-text-main' }} transition-colors">{{ $link['label'] }}</a>
-                        </li>
-                    @endforeach
-                </ul>
-            </div>
-
-            {{-- Informasi --}}
-            <div>
-                <h3 class="eyebrow {{ $isDark ? 'text-white/60' : '' }}">Informasi</h3>
-                <ul class="mt-5 space-y-3">
-                    @foreach($informasi as $link)
                         <li>
                             <a href="{{ $link['url'] }}" class="text-sm {{ $isDark ? 'text-white/70 hover:text-white' : 'text-text-muted hover:text-text-main' }} transition-colors">{{ $link['label'] }}</a>
                         </li>

@@ -144,6 +144,7 @@ class JourneyController extends Controller
             'judul' => $p->title,
             'slug' => $p->slug,
             'ringkasan' => $p->excerpt,
+            'konten' => $p->content,
             'foto' => ImageHelper::url($p->featured_image, $gambar['hero_journey']),
             'altTeks' => $p->featured_image_alt ?? $p->title,
             'tanggal' => optional($p->published_at)->toDateString() ?? now()->toDateString(),

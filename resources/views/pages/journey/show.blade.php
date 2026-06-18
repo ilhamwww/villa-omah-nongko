@@ -54,12 +54,12 @@
             <img src="{{ $artikel['foto'] }}" alt="{{ $artikel['altTeks'] }}"
                  fetchpriority="high" width="1600" height="900"
                  class="w-full h-[55vh] min-h-[420px] object-cover">
-            <div class="absolute inset-0 bg-black/45"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/10"></div>
             <div class="absolute inset-0 flex items-end">
                 <div class="container-site pb-12 text-white">
-                    <p class="eyebrow text-white/80">{{ $artikel['kategori'] }}</p>
-                    <h1 class="mt-3 font-heading text-4xl md:text-5xl lg:text-6xl leading-tight max-w-3xl">{{ $artikel['judul'] }}</h1>
-                    <div class="mt-4 text-sm text-white/75">
+                    <p class="eyebrow text-white/90">{{ $artikel['kategori'] }}</p>
+                    <h1 class="mt-3 font-heading text-4xl md:text-5xl lg:text-6xl leading-tight max-w-3xl text-white drop-shadow-md">{{ $artikel['judul'] }}</h1>
+                    <div class="mt-4 text-sm text-white/90 drop-shadow-sm">
                         {{ $tanggalTerbit->format('d M Y') }} &middot; {{ $artikel['waktuBaca'] }}
                     </div>
                 </div>
@@ -84,20 +84,7 @@
             <div class="max-w-3xl mx-auto">
                 <div class="prose prose-stone max-w-none prose-headings:font-heading prose-headings:font-normal prose-a:text-olive reveal-slide-up">
                     <p class="text-lg leading-relaxed text-text-muted">{{ $artikel['ringkasan'] }}</p>
-
-                    <h2>Temukan Pengalamannya</h2>
-                    <p>{{ $artikel['ringkasan'] }} Di Villa Omah Nongko, setiap momen dirancang untuk mendekatkan Anda dengan keindahan alam dan budaya Yogyakarta yang kaya. Sejak pertama kali tiba, Anda akan merasakan keselarasan antara arsitektur yang penuh perhatian dan alam tropis yang subur.</p>
-
-                    <p>Baik Anda mencari ketenangan maupun petualangan menjelajahi sudut wisata Jogja, villa kami adalah tempat sempurna untuk memulai. Jelajahi <a href="{{ route('the-villa') }}">tentang villa</a> dan lihat <a href="{{ route('gallery') }}">galeri</a> kami untuk melihat apa yang menanti Anda.</p>
-
-                    <h2>Mengapa Tamu Menyukainya</h2>
-                    <p>Para tamu kami selalu menyebutkan ruang tamu yang luas dan keramahan staf yang tulus. Detail-detail inilah yang mengubah menginap biasa menjadi kenangan yang tak terlupakan.</p>
-
-                    <blockquote>
-                        "Tempat peristirahatan yang tenang, terasa mewah sekaligus sangat menyatu dengan alam."
-                    </blockquote>
-
-                    <p>Siap merencanakan kunjungan Anda? Hubungi kami langsung dan kami akan membantu mengatur penginapan yang sempurna untuk Anda.</p>
+                    <p>{!! $artikel['konten'] !!}</p>
                 </div>
 
                 {{-- CTA WhatsApp --}}

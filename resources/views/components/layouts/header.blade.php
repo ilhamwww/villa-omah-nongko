@@ -30,7 +30,7 @@
                 </button>
                 <nav class="hidden lg:flex items-center gap-6" aria-label="Navigasi utama kiri">
                     <a href="{{ route('home.index') }}" class="nav-link">Beranda</a>
-                    <a href="{{ route('the-villa') }}" class="nav-link">Menginap</a>
+                    <a href="{{ route('the-villa') }}#suites" class="nav-link">Menginap</a>
                 </nav>
             </div>
 
