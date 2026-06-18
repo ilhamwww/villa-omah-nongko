@@ -8,7 +8,7 @@
 ])
 
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -52,15 +52,11 @@
 
     <x-layouts.header />
 
-    <div id="smooth-wrapper">
-        <div id="smooth-content" class="flex flex-col min-h-screen">
-            <main id="main-content" class="flex-1">
-                {{ $slot }}
-            </main>
+    <main id="main-content" class="flex-1">
+        {{ $slot }}
+    </main>
 
-            <x-layouts.footer :variant="$footerVariant" />
-        </div>
-    </div>
+    <x-layouts.footer :variant="$footerVariant" />
 
     {{-- Floating WhatsApp button (mobile) --}}
     <a href="{{ \App\Helpers\WhatsAppHelper::link() }}"
@@ -83,74 +79,5 @@
         class="fixed bottom-6 right-6 z-30 w-14 h-14 bg-primary/80 text-white rounded-md hover:bg-primary shadow-soft transition-colors hidden lg:flex items-center justify-center p-0">
         <x-ui.icon name="arrow-up" class="w-6 h-6 block" />
     </button>
-
-    <script src="{{ asset('smoothscroll/gsap.min.js') }}"></script>
-    <script src="{{ asset('smoothscroll/ScrollTrigger.min.js') }}"></script>
-    <script src="{{ asset('smoothscroll/ScrollSmoother.min.js') }}"></script>
-    <script>
-        // Mencegah browser melakukan native scroll jump yang merusak kalkulasi ScrollSmoother
-        if ('scrollRestoration' in history) {
-            history.scrollRestoration = 'manual';
-        }
-        if (window.location.hash) {
-            window.scrollTo(0, 0);
-            setTimeout(() => window.scrollTo(0, 0), 1);
-        }
-
-        document.addEventListener("DOMContentLoaded", (event) => {
-            gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
-            const smoother = ScrollSmoother.create({
-                wrapper: '#smooth-wrapper',
-                content: '#smooth-content',
-                smooth: 1.5,
-                effects: true,
-                smoothTouch: 0.1
-            });
-
-            // Handle scroll ke elemen hash saat pertama kali load
-            if (window.location.hash) {
-                const target = document.querySelector(window.location.hash);
-                if (target) {
-                    setTimeout(() => {
-                        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                    }, 300);
-                }
-            }
-
-            // Mencegah default anchor click dan menggunakan smooth scroll native
-            document.querySelectorAll('a').forEach(anchor => {
-                anchor.addEventListener('click', function(e) {
-                    const href = this.getAttribute('href');
-                    if (!href) return;
-                    
-                    // Jika link adalah hash murni misal: href="#reviews"
-                    if (href.startsWith('#') && href !== '#') {
-                        const target = document.querySelector(href);
-                        if (target) {
-                            e.preventDefault();
-                            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                            history.pushState(null, null, href);
-                        }
-                        return;
-                    }
-
-                    // Jika link berupa URL penuh yang mengarah ke page saat ini + hash
-                    try {
-                        const url = new URL(this.href);
-                        if (url.pathname === window.location.pathname && url.hash && url.hash !== '#') {
-                            const target = document.querySelector(url.hash);
-                            if (target) {
-                                e.preventDefault();
-                                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                                history.pushState(null, null, url.hash);
-                            }
-                        }
-                    } catch(err) {
-                        // Abaikan error parsing URL
-                    }
-                });
-            });
-        });
-    </script>
 </body>
 </html>
