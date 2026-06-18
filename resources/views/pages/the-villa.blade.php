@@ -5,6 +5,11 @@
     $deskripsiHero = $halaman?->hero_description ?: 'Villa Omah Nongko adalah villa privat 5 kamar tidur yang memadukan arsitektur unik dengan kehidupan tropis yang luas. Dirancang untuk selaras dengan alam sekitarnya, villa ini menawarkan kenyamanan, privasi, dan suasana yang autentik.';
     $fotoHero = $halaman?->hero_image ? asset('storage/'.$halaman?->hero_image) : $gambar['hero_villa'];
     $altFotoHero = $halaman?->hero_image_alt ?: 'Tampak eksterior Villa Omah Nongko dengan kolam dan taman tropis';
+    
+    // Fallback static if not exists in Page content_blocks
+    $fotoAboutLarge = !empty($halaman?->content_blocks['about_large']) ? asset('storage/' . $halaman->content_blocks['about_large']) : $gambar['about_large'];
+    $fotoAboutSmall = !empty($halaman?->content_blocks['about_small']) ? asset('storage/' . $halaman->content_blocks['about_small']) : $gambar['about_small'];
+
     $fotoGaleri = collect($kategoriGaleri)->flatMap(fn ($c) => $c['daftarFoto'])->take(8)->values()->all();
     $schema = [
         '@context' => 'https://schema.org',
@@ -57,10 +62,10 @@
                     </div>
                 </div>
                 <div class="relative min-h-[380px] md:min-h-[460px] reveal-scale-up delay-200">
-                    <img src="{{ $fotoHero }}" alt="{{ $altFotoHero }}"
+                    <img src="{{ $fotoAboutLarge ?? $fotoHero }}" alt="{{ $altFotoHero }}"
                          loading="lazy" width="900" height="600"
                          class="w-[78%] aspect-[4/3] object-cover">
-                    <img src="{{ $gambar['about_small'] }}" alt="Interior living room Villa Omah Nongko"
+                    <img src="{{ $fotoAboutSmall }}" alt="Interior living room Villa Omah Nongko"
                          loading="lazy" width="500" height="380"
                          class="absolute right-0 bottom-0 w-[52%] aspect-[4/3] object-cover shadow-photo reveal-slide-up delay-500">
                 </div>

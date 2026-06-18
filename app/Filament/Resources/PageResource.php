@@ -31,9 +31,10 @@ class PageResource extends Resource
                                 ->helperText('Unique key: home, the-villa, gallery, journey'),
                             Forms\Components\Textarea::make('hero_description')->rows(3),
                             Forms\Components\FileUpload::make('hero_image')
+                                ->label('Hero Image (Gambar Besar)')
                                 ->imageEditor()
                                 ->disk('public')->directory('pages')->image(),
-                            Forms\Components\TextInput::make('hero_title'),
+                            Forms\Components\TextInput::make('hero_title')->label('Hero Title'),
                             Forms\Components\Select::make('status')
                                 ->options(['draft' => 'Draft', 'published' => 'Published'])
                                 ->default('published'),
@@ -41,6 +42,21 @@ class PageResource extends Resource
                     
                     Forms\Components\Tabs\Tab::make('Extra Content')
                         ->schema([
+                            Forms\Components\Fieldset::make('Gambar Tentang Villa')
+                                ->schema([
+                                    Forms\Components\FileUpload::make('content_blocks.about_large')
+                                        ->label('Gambar Utama (Besar)')
+                                        ->helperText('Gambar besar yang muncul di bagian Tentang/Intro (Home & The Villa)')
+                                        ->imageEditor()
+                                        ->disk('public')->directory('pages/about')->image(),
+                                    Forms\Components\FileUpload::make('content_blocks.about_small')
+                                        ->label('Gambar Pendukung (Kecil)')
+                                        ->helperText('Gambar kecil/inset yang menumpuk di atas/bawah gambar besar')
+                                        ->imageEditor()
+                                        ->disk('public')->directory('pages/about')->image(),
+                                ])
+                                ->visible(fn (\Filament\Forms\Get $get) => in_array($get('page_key'), ['home', 'the-villa'])),
+
                             Forms\Components\Fieldset::make('Section: Hidup Selaras (The Villa)')
                                 ->schema([
                                     Forms\Components\TextInput::make('content_blocks.harmoni_title')
@@ -63,9 +79,9 @@ class PageResource extends Resource
                                         ])
                                         ->columnSpanFull(),
                                 ])
-                                ->visible(fn (\Filament\Forms\Get $get) => $get('page_key') === 'the-villa'),
+                                 ->visible(fn (\Filament\Forms\Get $get) => $get('page_key') === 'the-villa'),
                         ])
-                        ->visible(fn (\Filament\Forms\Get $get) => $get('page_key') === 'the-villa'),
+                        ->visible(fn (\Filament\Forms\Get $get) => in_array($get('page_key'), ['home', 'the-villa'])),
                     Forms\Components\Tabs\Tab::make('SEO')
                         ->schema([
                             Forms\Components\TextInput::make('seo_title')

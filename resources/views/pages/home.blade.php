@@ -5,6 +5,11 @@
     $deskripsiHero = $halaman?->hero_description ?: "Villa Omah Nongko adalah villa privat 5 kamar tidur yang memadukan arsitektur unik dengan kehidupan tropis yang luas. Terletak di Sleman, Yogyakarta, dikelilingi alam yang asri dan sejuk.";
     $fotoHero = $halaman?->hero_image ? asset('storage/' . $halaman?->hero_image) : $gambar['hero_home'];
     $altFotoHero = $halaman?->hero_image_alt ?: 'Villa Omah Nongko dengan taman tropis di Yogyakarta';
+    
+    // Fallback static if not exists in Page content_blocks
+    $fotoAboutLarge = !empty($halaman?->content_blocks['about_large']) ? asset('storage/' . $halaman->content_blocks['about_large']) : $gambar['about_large'];
+    $fotoAboutSmall = !empty($halaman?->content_blocks['about_small']) ? asset('storage/' . $halaman->content_blocks['about_small']) : $gambar['about_small'];
+
     $schema = [
         '@context' => 'https://schema.org',
         '@type' => 'LodgingBusiness',
@@ -83,10 +88,10 @@
                     </a>
                 </div>
                 <div class="relative min-h-[360px] md:min-h-[430px] reveal-scale-up delay-200">
-                    <img src="{{ $gambar['about_large'] }}"
+                    <img src="{{ $fotoAboutLarge }}"
                         alt="Eksterior Villa Omah Nongko dengan kolam dan taman tropis hijau" loading="lazy" width="900"
                         height="700" class="w-[72%] ml-auto aspect-[4/3] object-cover">
-                    <img src="{{ $gambar['about_small'] }}"
+                    <img src="{{ $fotoAboutSmall }}"
                         alt="Interior living room Villa Omah Nongko dengan material kayu natural" loading="lazy"
                         width="600" height="500"
                         class="absolute left-0 bottom-6 w-[48%] aspect-[4/3] object-cover shadow-photo reveal-slide-up delay-500">
