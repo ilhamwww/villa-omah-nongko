@@ -55,6 +55,7 @@
         'email' => '<rect x="3" y="5" width="18" height="14" rx="2" stroke-width="1.6"/><path stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" d="m3 7 9 6 9-6"/>',
         'pin' => '<path stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" d="M12 22s7-7 7-12a7 7 0 1 0-14 0c0 5 7 12 7 12Z"/><circle cx="12" cy="10" r="2.5" stroke-width="1.6"/>',
         'arrow-up' => '<path stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" d="M12 19V5M6 11l6-6 6 6"/>',
+        'eye' => '<path stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3" stroke-width="1.6"/>',
     ];
 
     $svg = $icons[$name] ?? $icons['leaf'];

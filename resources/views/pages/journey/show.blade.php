@@ -59,8 +59,15 @@
                 <div class="container-site pb-12 text-white">
                     <p class="eyebrow text-white/90">{{ $artikel['kategori'] }}</p>
                     <h1 class="mt-3 font-heading text-4xl md:text-5xl lg:text-6xl leading-tight max-w-3xl text-white drop-shadow-md">{{ $artikel['judul'] }}</h1>
-                    <div class="mt-4 text-sm text-white/90 drop-shadow-sm">
-                        {{ $tanggalTerbit->format('d M Y') }} &middot; {{ $artikel['waktuBaca'] }}
+                    <div class="mt-4 text-sm text-white/90 drop-shadow-sm flex items-center gap-2">
+                        <span>{{ $tanggalTerbit->format('d M Y') }}</span>
+                        <span>&middot;</span>
+                        <span>{{ $artikel['waktuBaca'] }}</span>
+                        <span>&middot;</span>
+                        <span class="flex items-center gap-1">
+                            <x-ui.icon name="eye" class="w-4 h-4 opacity-80" />
+                            {{ $artikel['views'] }} dilihat
+                        </span>
                     </div>
                 </div>
             </div>

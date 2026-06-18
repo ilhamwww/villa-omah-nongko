@@ -19,6 +19,7 @@ class JourneyPost extends Model
         'faq_items' => 'array',
         'related_post_ids' => 'array',
         'schema_override' => 'array',
+        'views_count' => 'integer',
     ];
 
     public function category(): BelongsTo
@@ -38,7 +39,7 @@ class JourneyPost extends Model
 
     public function scopePopular($query)
     {
-        return $query->where('is_popular', true);
+        return $query->orderByDesc('views_count');
     }
 
     public function getReadingTimeAttribute($value)

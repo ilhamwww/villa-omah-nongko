@@ -60,12 +60,10 @@ class JourneyController extends Controller
             ['path' => route('journey.index'), 'query' => $request->query()]
         );
 
-        // Artikel populer
         $artikelPopuler = JourneyPost::query()
             ->published()
             ->popular()
             ->with('category')
-            ->orderByDesc('published_at')
             ->take(4)
             ->get()
             ->map(fn ($p) => $this->ubahFormat($p, $gambar))
@@ -105,6 +103,10 @@ class JourneyController extends Controller
             ->first();
 
         abort_if(! $model, 404);
+
+        // Increment views count safely without triggering timestamps
+        $model->timestamps = false;
+        $model->increment('views_count');
 
         $artikel = $this->ubahFormat($model, $gambar);
 
@@ -152,6 +154,7 @@ class JourneyController extends Controller
             'altTeks' => $p->featured_image_alt ?? $p->title,
             'tanggal' => optional($p->published_at)->toDateString() ?? now()->toDateString(),
             'waktuBaca' => $p->reading_time . ' menit baca',
+            'views' => number_format($p->views_count ?? 0, 0, ',', '.'),
             'populer' => $p->is_popular,
         ];
     }
