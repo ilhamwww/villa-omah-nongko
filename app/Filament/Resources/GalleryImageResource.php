@@ -29,6 +29,7 @@ class GalleryImageResource extends Resource
                 ->directory('gallery')
                 ->image()
                 ->optimize('webp')
+                ->maxImageWidth(1600)
                 ->required(),
             Forms\Components\TextInput::make('alt_text')
                 ->required()

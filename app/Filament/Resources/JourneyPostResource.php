@@ -48,7 +48,8 @@ class JourneyPostResource extends Resource
                 ->disk('public')
                 ->directory('journey')
                 ->image()
-                ->optimize('webp'),
+                ->optimize('webp')
+                ->maxImageWidth(1600),
             Forms\Components\RichEditor::make('content')
                 ->label('Konten Artikel')
                 ->required(),

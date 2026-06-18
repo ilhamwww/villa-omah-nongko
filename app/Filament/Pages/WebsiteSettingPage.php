@@ -70,19 +70,22 @@ class WebsiteSettingPage extends Page implements HasForms
                                     ->disk('public')
                                     ->directory('branding')
                                     ->image()
-                                    ->optimize('webp'),
+                                    ->optimize('webp')
+                                    ->maxImageWidth(800),
                                 Forms\Components\FileUpload::make('logo_light')
                                     ->label('Logo Light (for dark backgrounds)')
                                     ->disk('public')
                                     ->directory('branding')
                                     ->image()
-                                    ->optimize('webp'),
+                                    ->optimize('webp')
+                                    ->maxImageWidth(800),
                                 Forms\Components\FileUpload::make('logo_dark')
                                     ->label('Logo Dark (for light backgrounds)')
                                     ->disk('public')
                                     ->directory('branding')
                                     ->image()
-                                    ->optimize('webp'),
+                                    ->optimize('webp')
+                                    ->maxImageWidth(800),
                                 Forms\Components\FileUpload::make('favicon')
                                     ->disk('public')
                                     ->directory('branding')
@@ -92,13 +95,15 @@ class WebsiteSettingPage extends Page implements HasForms
                                     ->disk('public')
                                     ->directory('hero-images')
                                     ->image()
-                                    ->optimize('webp'),
+                                    ->optimize('webp')
+                                    ->maxImageWidth(1920),
                                 Forms\Components\FileUpload::make('footer_background_image')
                                     ->label('Footer Background Image')
                                     ->disk('public')
                                     ->directory('branding')
                                     ->image()
-                                    ->optimize('webp'),
+                                    ->optimize('webp')
+                                    ->maxImageWidth(1920),
                             ]),
 
                         Forms\Components\Tabs\Tab::make('Social Links')
@@ -130,7 +135,8 @@ class WebsiteSettingPage extends Page implements HasForms
                                     ->disk('public')
                                     ->directory('seo')
                                     ->image()
-                                    ->optimize('webp'),
+                                    ->optimize('webp')
+                                    ->maxImageWidth(1200),
                                 Forms\Components\Toggle::make('robots_index_default')
                                     ->label('Allow Search Engines to Index (default)')
                                     ->default(true),
