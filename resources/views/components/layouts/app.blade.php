@@ -48,15 +48,15 @@
 
     <x-layouts.header />
 
-    <!-- <div id="smooth-wrapper"> -->
-        <!-- <div id="smooth-content" class="flex flex-col min-h-screen"> -->
+    <div id="smooth-wrapper">
+        <div id="smooth-content" class="flex flex-col min-h-screen">
             <main id="main-content" class="flex-1">
                 {{ $slot }}
             </main>
 
             <x-layouts.footer :variant="$footerVariant" />
-        <!-- </div> -->
-    <!-- </div> -->
+        </div>
+    </div>
 
     {{-- Floating WhatsApp button (mobile) --}}
     <a href="{{ \App\Helpers\WhatsAppHelper::link() }}"
@@ -80,14 +80,13 @@
         <x-ui.icon name="arrow-up" class="w-6 h-6 block" />
     </button>
 
-    {{-- 
+    <!-- {{-- 
     <script src="{{ asset('smoothscroll/gsap.min.js') }}"></script>
     <script src="{{ asset('smoothscroll/ScrollTrigger.min.js') }}"></script>
     <script src="{{ asset('smoothscroll/ScrollSmoother.min.js') }}"></script>
-    --}}
+    --}} -->
     <script>
         // Mencegah browser melakukan native scroll jump yang merusak kalkulasi ScrollSmoother
-        /*
         if ('scrollRestoration' in history) {
             history.scrollRestoration = 'manual';
         }
@@ -95,10 +94,8 @@
             window.scrollTo(0, 0);
             setTimeout(() => window.scrollTo(0, 0), 1);
         }
-        */
 
         document.addEventListener("DOMContentLoaded", (event) => {
-            /*
             gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
             const smoother = ScrollSmoother.create({
                 wrapper: '#smooth-wrapper',
@@ -107,7 +104,6 @@
                 effects: true,
                 smoothTouch: 0.1
             });
-            */
 
             // Handle scroll ke elemen hash saat pertama kali load
             if (window.location.hash) {
