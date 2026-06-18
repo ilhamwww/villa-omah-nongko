@@ -77,12 +77,14 @@
 
     {{-- Strip Fitur (gelap) --}}
     <section class="bg-primary text-white relative overflow-hidden" aria-label="Fasilitas villa">
-        <x-ui.icon name="leaf" class="absolute right-10 top-0 w-64 h-64 text-white opacity-[0.05] pointer-events-none reveal-slide-left delay-300" />
-        <div class="container-site py-12 relative">
+        <div class="absolute right-10 top-0 w-64 h-64 z-0 pointer-events-none reveal-slide-left delay-300">
+            <x-ui.icon name="leaf" class="w-full h-full text-white opacity-[0.08]" />
+        </div>
+        <div class="container-site py-12 relative z-10">
             <div class="grid grid-cols-3 md:grid-cols-6 gap-y-8 gap-x-4">
                 @foreach($stripFitur as $fitur)
                     <div class="flex flex-col items-center text-center reveal-slide-up" style="transition-delay: {{ ($loop->index % 6) * 100 }}ms;">
-                        <x-ui.icon :name="$fitur['ikon']" class="w-7 h-7 text-white/85" />
+                        <x-ui.icon :name="$fitur['ikon']" class="w-7 h-7 text-white/85 " />
                         <span class="mt-3 text-xs leading-snug text-white/80">{{ $fitur['label'] }}</span>
                     </div>
                 @endforeach

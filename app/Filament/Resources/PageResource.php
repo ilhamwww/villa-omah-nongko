@@ -66,6 +66,10 @@ class PageResource extends Resource
                                         ->label('Description')
                                         ->rows(3)
                                         ->default('Ruang tamu dan ruang makan terbuka mengundang keindahan alam masuk, sementara material alami dan detail kerajinan tangan menciptakan suasana hangat yang tak lekang oleh waktu.'),
+                                    Forms\Components\FileUpload::make('content_blocks.harmoni_image')
+                                        ->label('Gambar Utama (Kursi Kuning/Ruang Tamu)')
+                                        ->imageEditor()
+                                        ->disk('public')->directory('pages/the-villa')->image(),
                                     Forms\Components\Repeater::make('content_blocks.living_checklist')
                                         ->label('Checklist Items')
                                         ->simple(
@@ -78,6 +82,22 @@ class PageResource extends Resource
                                             'Material kayu jati alami & sentuhan arsitektur Jawa',
                                         ])
                                         ->columnSpanFull(),
+                                ])
+                                 ->visible(fn (\Filament\Forms\Get $get) => $get('page_key') === 'the-villa'),
+
+                            Forms\Components\Fieldset::make('Section: Arsitektur (The Villa)')
+                                ->schema([
+                                    Forms\Components\TextInput::make('content_blocks.arsitektur_title')
+                                        ->label('Title')
+                                        ->default('Arsitektur'),
+                                    Forms\Components\Textarea::make('content_blocks.arsitektur_description')
+                                        ->label('Description')
+                                        ->rows(3)
+                                        ->default('Desain arsitektur Omah Nongko terinspirasi dari lengkungan dan tekstur alam tropis. Atap berbentuk daun, ruang terbuka, dan penggunaan elemen alami menciptakan villa yang terasa unik dan sangat menyatu dengan alam sekitarnya.'),
+                                    Forms\Components\FileUpload::make('content_blocks.arsitektur_image')
+                                        ->label('Gambar Arsitektur (Rumah Merah/Villa)')
+                                        ->imageEditor()
+                                        ->disk('public')->directory('pages/the-villa')->image(),
                                 ])
                                  ->visible(fn (\Filament\Forms\Get $get) => $get('page_key') === 'the-villa'),
                         ])

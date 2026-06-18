@@ -158,9 +158,10 @@
     <section id="amenities" class="py-section-md md:py-section-lg relative overflow-hidden"
         aria-labelledby="fasilitas-heading">
         {{-- Dekorasi daun (desktop saja, tipis di belakang) --}}
-        <x-ui.icon name="leaf"
-            class="hidden md:block absolute -left-16 bottom-0 w-64 h-64 lg:w-80 lg:h-80 text-olive opacity-[0.04] -z-0 pointer-events-none reveal-slide-right delay-300" />
-        <div class="container-site relative">
+        <div class="hidden md:block absolute -left-16 bottom-0 w-64 h-64 lg:w-80 lg:h-80 z-0 pointer-events-none reveal-slide-right delay-300">
+            <x-ui.icon name="leaf" class="w-full h-full text-olive opacity-[0.04]" />
+        </div>
+        <div class="container-site relative z-10">
             <div class="text-center max-w-2xl mx-auto reveal-slide-up">
                 <p class="eyebrow">Keunggulan & Fasilitas</p>
                 <h2 id="fasilitas-heading" class="mt-3 font-heading text-3xl md:text-4xl lg:text-[42px] leading-tight">
@@ -283,9 +284,10 @@
     {{-- Newsletter --}}
     <section class="bg-primary-2 text-white relative overflow-hidden" aria-labelledby="newsletter-heading">
         {{-- Dekorasi daun disembunyikan di mobile agar tidak menabrak teks/form --}}
-        <x-ui.icon name="leaf"
-            class="hidden md:block absolute right-0 top-0 w-80 h-80 text-white opacity-[0.03] -z-0 pointer-events-none reveal-slide-left delay-300" />
-        <div class="container-site py-12 md:py-16 relative">
+        <div class="hidden md:block absolute right-0 top-0 w-80 h-80 z-0 pointer-events-none reveal-slide-left delay-300">
+            <x-ui.icon name="leaf" class="w-full h-full text-white opacity-5" />
+        </div>
+        <div class="container-site py-12 md:py-16 relative z-10">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
                 <div class="reveal-slide-right">
                     <h2 id="newsletter-heading" class="font-heading text-3xl text-white">Dapatkan Info Terbaru</h2>

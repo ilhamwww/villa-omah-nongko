@@ -142,7 +142,7 @@
                     </ul>
                 </div>
                 <div class="reveal-scale-up delay-200">
-                    <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=1000&h=625&fit=crop"
+                    <img src="{{ !empty($halaman?->content_blocks['harmoni_image']) ? asset('storage/' . $halaman->content_blocks['harmoni_image']) : 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=1000&h=625&fit=crop' }}"
                          alt="Ruang tamu terbuka Villa Omah Nongko dengan jendela besar menghadap taman"
                          loading="lazy" width="1000" height="625"
                          class="w-full aspect-[16/10] object-cover">
@@ -216,11 +216,15 @@
         <div class="container-site">
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-10 items-center">
                 <div class="reveal-slide-right">
-                    <h2 id="arsitektur-heading" class="font-heading text-2xl md:text-3xl">Arsitektur</h2>
-                    <p class="mt-4 text-text-muted text-sm leading-relaxed">Desain arsitektur Omah Nongko terinspirasi dari lengkungan dan tekstur alam tropis. Atap berbentuk daun, ruang terbuka, dan penggunaan elemen alami menciptakan villa yang terasa unik dan sangat menyatu dengan alam sekitarnya.</p>
+                    <h2 id="arsitektur-heading" class="font-heading text-2xl md:text-3xl">
+                        {{ $halaman?->content_blocks['arsitektur_title'] ?? 'Arsitektur' }}
+                    </h2>
+                    <p class="mt-4 text-text-muted text-sm leading-relaxed">
+                        {{ $halaman?->content_blocks['arsitektur_description'] ?? 'Desain arsitektur Omah Nongko terinspirasi dari lengkungan dan tekstur alam tropis. Atap berbentuk daun, ruang terbuka, dan penggunaan elemen alami menciptakan villa yang terasa unik dan sangat menyatu dengan alam sekitarnya.' }}
+                    </p>
                 </div>
                 <div class="reveal-scale-up delay-200">
-                    <img src="https://images.unsplash.com/photo-1518780664697-55e3ad937233?w=700&h=500&fit=crop"
+                    <img src="{{ !empty($halaman?->content_blocks['arsitektur_image']) ? asset('storage/' . $halaman->content_blocks['arsitektur_image']) : 'https://images.unsplash.com/photo-1518780664697-55e3ad937233?w=700&h=500&fit=crop' }}"
                          alt="Arsitektur atap melengkung khas Villa Omah Nongko"
                          loading="lazy" width="700" height="500"
                          class="w-full aspect-[4/3] object-cover">
