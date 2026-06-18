@@ -9,6 +9,7 @@ use App\Models\JourneyPost;
 use App\Models\Page;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 
 class JourneyController extends Controller
@@ -42,10 +43,13 @@ class JourneyController extends Controller
         }
 
         $pencarian = trim((string) $request->query('q', ''));
+        $pencarian = mb_substr($pencarian, 0, 100);
         if ($pencarian !== '') {
-            $query->where(function ($q) use ($pencarian) {
-                $q->where('title', 'like', "%{$pencarian}%")
-                    ->orWhere('content', 'like', "%{$pencarian}%");
+            $escaped = addcslashes($pencarian, '\%_');
+            $like = "%{$escaped}%";
+            $query->where(function ($q) use ($like) {
+                $q->whereRaw('title LIKE ? ESCAPE ?', [$like, '\\'])
+                    ->orWhereRaw('content LIKE ? ESCAPE ?', [$like, '\\']);
             });
         }
 
@@ -92,7 +96,7 @@ class JourneyController extends Controller
         ]);
     }
 
-    public function show(string $slug)
+    public function show(Request $request, string $slug)
     {
         $gambar = config('villa.images');
 
@@ -104,9 +108,7 @@ class JourneyController extends Controller
 
         abort_if(! $model, 404);
 
-        // Increment views count safely without triggering timestamps
-        $model->timestamps = false;
-        $model->increment('views_count');
+        $this->catatViews($model, $request);
 
         $artikel = $this->ubahFormat($model, $gambar);
 
@@ -134,6 +136,24 @@ class JourneyController extends Controller
             'artikel' => $artikel,
             'artikelTerkait' => $artikelTerkait,
         ]);
+    }
+
+    /**
+     * Menaikkan jumlah views dengan throttle per pengunjung (IP) per artikel.
+     * Mencegah inflasi counter dan write DB berlebih pada setiap request.
+     */
+    private function catatViews(JourneyPost $model, Request $request): void
+    {
+        $kunci = 'journey_view:' . $model->id . ':' . sha1($request->ip() . '|' . $request->userAgent());
+
+        if (Cache::has($kunci)) {
+            return;
+        }
+
+        Cache::put($kunci, true, now()->addMinutes(30));
+
+        $model->timestamps = false;
+        $model->increment('views_count');
     }
 
     /**
