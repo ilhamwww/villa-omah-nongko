@@ -13,8 +13,8 @@
 <header
     x-data="{ scrolled: false }"
     x-on:scroll.window="scrolled = window.scrollY > 60"
-    :class="scrolled ? 'bg-primary/90 backdrop-blur-md py-3 shadow-md' : 'bg-primary/50 md:bg-transparent py-4 md:py-6'"
-    class="fixed top-0 left-0 right-0 z-50 text-white transition-all duration-300">
+    :class="scrolled ? 'bg-primary/90 backdrop-blur-sm py-3 shadow-md' : 'bg-transparent py-6'"
+    class="fixed top-0 left-0 right-0 z-30 text-white transition-all duration-300">
 
     <div class="container-site">
         {{-- Baris utama --}}
