@@ -48,9 +48,6 @@ class JourneyPostResource extends Resource
                 ->disk('public')
                 ->directory('journey')
                 ->image(),
-            Forms\Components\Textarea::make('excerpt')
-                ->label('Ringkasan / Kutipan')
-                ->rows(3),
             Forms\Components\RichEditor::make('content')
                 ->label('Konten Artikel')
                 ->required(),

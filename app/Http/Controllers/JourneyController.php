@@ -9,6 +9,7 @@ use App\Models\JourneyPost;
 use App\Models\Page;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Str;
 
 class JourneyController extends Controller
 {
@@ -44,7 +45,7 @@ class JourneyController extends Controller
         if ($pencarian !== '') {
             $query->where(function ($q) use ($pencarian) {
                 $q->where('title', 'like', "%{$pencarian}%")
-                    ->orWhere('excerpt', 'like', "%{$pencarian}%");
+                    ->orWhere('content', 'like', "%{$pencarian}%");
             });
         }
 
@@ -138,12 +139,14 @@ class JourneyController extends Controller
      */
     private function ubahFormat(JourneyPost $p, array $gambar): array
     {
+        $ringkasan = Str::limit(strip_tags($p->content), 160);
+
         return [
             'kategori' => $p->category?->name ?? 'Journey',
             'slugKategori' => $p->category?->slug ?? 'all',
             'judul' => $p->title,
             'slug' => $p->slug,
-            'ringkasan' => $p->excerpt,
+            'ringkasan' => $ringkasan,
             'konten' => $p->content,
             'foto' => ImageHelper::url($p->featured_image, $gambar['hero_journey']),
             'altTeks' => $p->featured_image_alt ?? $p->title,
