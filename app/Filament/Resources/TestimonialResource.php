@@ -24,7 +24,7 @@ class TestimonialResource extends Resource
                 ->maxLength(255),
             Forms\Components\FileUpload::make('image')
                 ->imageEditor()
-                ->disk('public')->directory('testimonials')->image(),
+                ->disk('public')->directory('testimonials')->image()->optimize('webp'),
             Forms\Components\Textarea::make('content')->required()->rows(4),
             Forms\Components\TextInput::make('rating')->numeric()->minValue(1)->maxValue(5)->default(5),
             Forms\Components\TextInput::make('sort_order')->numeric()->default(0),

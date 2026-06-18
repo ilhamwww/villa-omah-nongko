@@ -47,7 +47,8 @@ class JourneyPostResource extends Resource
                 ->label('Gambar Utama')
                 ->disk('public')
                 ->directory('journey')
-                ->image(),
+                ->image()
+                ->optimize('webp'),
             Forms\Components\RichEditor::make('content')
                 ->label('Konten Artikel')
                 ->required(),

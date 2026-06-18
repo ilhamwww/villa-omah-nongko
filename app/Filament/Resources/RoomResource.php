@@ -27,7 +27,7 @@ class RoomResource extends Resource
             Forms\Components\Textarea::make('description')->rows(4),
             Forms\Components\FileUpload::make('image')
                 ->imageEditor()
-                ->disk('public')->directory('rooms')->image(),
+                ->disk('public')->directory('rooms')->image()->optimize('webp'),
             Forms\Components\TextInput::make('image_alt')->maxLength(255),
             Forms\Components\TextInput::make('button_label')->helperText('e.g. Book this room')->maxLength(255),
             Forms\Components\TextInput::make('button_url')->maxLength(255),

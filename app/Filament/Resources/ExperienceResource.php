@@ -23,7 +23,7 @@ class ExperienceResource extends Resource
             Forms\Components\Textarea::make('description')->rows(4),
             Forms\Components\FileUpload::make('image')
                 ->imageEditor()
-                ->disk('public')->directory('experiences')->image(),
+                ->disk('public')->directory('experiences')->image()->optimize('webp'),
             Forms\Components\TextInput::make('image_alt')->maxLength(255),
             Forms\Components\Grid::make(2)->schema([
                 Forms\Components\Select::make('icon')

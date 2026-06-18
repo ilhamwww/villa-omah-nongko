@@ -33,7 +33,7 @@ class PageResource extends Resource
                             Forms\Components\FileUpload::make('hero_image')
                                 ->label('Hero Image (Gambar Besar)')
                                 ->imageEditor()
-                                ->disk('public')->directory('pages')->image(),
+                                ->disk('public')->directory('pages')->image()->optimize('webp'),
                             Forms\Components\TextInput::make('hero_title')->label('Hero Title'),
                             Forms\Components\Select::make('status')
                                 ->options(['draft' => 'Draft', 'published' => 'Published'])
@@ -48,12 +48,12 @@ class PageResource extends Resource
                                         ->label('Gambar Utama (Besar)')
                                         ->helperText('Gambar besar yang muncul di bagian Tentang/Intro (Home & The Villa)')
                                         ->imageEditor()
-                                        ->disk('public')->directory('pages/about')->image(),
+                                        ->disk('public')->directory('pages/about')->image()->optimize('webp'),
                                     Forms\Components\FileUpload::make('content_blocks.about_small')
                                         ->label('Gambar Pendukung (Kecil)')
                                         ->helperText('Gambar kecil/inset yang menumpuk di atas/bawah gambar besar')
                                         ->imageEditor()
-                                        ->disk('public')->directory('pages/about')->image(),
+                                        ->disk('public')->directory('pages/about')->image()->optimize('webp'),
                                 ])
                                 ->visible(fn (\Filament\Forms\Get $get) => in_array($get('page_key'), ['home', 'the-villa'])),
 
@@ -69,7 +69,7 @@ class PageResource extends Resource
                                     Forms\Components\FileUpload::make('content_blocks.harmoni_image')
                                         ->label('Gambar Utama (Kursi Kuning/Ruang Tamu)')
                                         ->imageEditor()
-                                        ->disk('public')->directory('pages/the-villa')->image(),
+                                        ->disk('public')->directory('pages/the-villa')->image()->optimize('webp'),
                                     Forms\Components\Repeater::make('content_blocks.living_checklist')
                                         ->label('Checklist Items')
                                         ->simple(
@@ -97,7 +97,7 @@ class PageResource extends Resource
                                     Forms\Components\FileUpload::make('content_blocks.arsitektur_image')
                                         ->label('Gambar Arsitektur (Rumah Merah/Villa)')
                                         ->imageEditor()
-                                        ->disk('public')->directory('pages/the-villa')->image(),
+                                        ->disk('public')->directory('pages/the-villa')->image()->optimize('webp'),
                                 ])
                                  ->visible(fn (\Filament\Forms\Get $get) => $get('page_key') === 'the-villa'),
                         ])
@@ -121,7 +121,8 @@ class PageResource extends Resource
                                 ->helperText('Gambar yang akan muncul saat link halaman ini dibagikan di media sosial (WhatsApp, Facebook, Instagram, dll). Disarankan resolusi 1200x630 piksel.')
                                 ->disk('public')
                                 ->directory('seo')
-                                ->image(),
+                                ->image()
+                                ->optimize('webp'),
                             Forms\Components\Toggle::make('robots_index')
                                 ->label('Robots Index')
                                 ->helperText('Izinkan mesin pencari (Google) untuk mengindeks halaman ini agar muncul di hasil pencarian.')

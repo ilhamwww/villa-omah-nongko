@@ -28,6 +28,7 @@ class GalleryImageResource extends Resource
                 ->disk('public')
                 ->directory('gallery')
                 ->image()
+                ->optimize('webp')
                 ->required(),
             Forms\Components\TextInput::make('alt_text')
                 ->required()
