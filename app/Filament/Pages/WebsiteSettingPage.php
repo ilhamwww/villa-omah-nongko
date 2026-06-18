@@ -67,12 +67,14 @@ class WebsiteSettingPage extends Page implements HasForms
                             ->icon('heroicon-o-photo')
                             ->schema([
                                 Forms\Components\FileUpload::make('logo')
+                                    ->imageEditor()
                                     ->disk('public')
                                     ->directory('branding')
                                     ->image()
                                     ->optimize('webp')
                                     ->maxImageWidth(800),
                                 Forms\Components\FileUpload::make('logo_light')
+                                    ->imageEditor()
                                     ->label('Logo Light (for dark backgrounds)')
                                     ->disk('public')
                                     ->directory('branding')
@@ -80,6 +82,7 @@ class WebsiteSettingPage extends Page implements HasForms
                                     ->optimize('webp')
                                     ->maxImageWidth(800),
                                 Forms\Components\FileUpload::make('logo_dark')
+                                    ->imageEditor()
                                     ->label('Logo Dark (for light backgrounds)')
                                     ->disk('public')
                                     ->directory('branding')
@@ -87,10 +90,12 @@ class WebsiteSettingPage extends Page implements HasForms
                                     ->optimize('webp')
                                     ->maxImageWidth(800),
                                 Forms\Components\FileUpload::make('favicon')
+                                    ->imageEditor()
                                     ->disk('public')
                                     ->directory('branding')
                                     ->image(),
                                 Forms\Components\FileUpload::make('default_hero_image')
+                                    ->imageEditor()
                                     ->label('Default Hero Image')
                                     ->disk('public')
                                     ->directory('hero-images')
@@ -98,6 +103,7 @@ class WebsiteSettingPage extends Page implements HasForms
                                     ->optimize('webp')
                                     ->maxImageWidth(1920),
                                 Forms\Components\FileUpload::make('footer_background_image')
+                                    ->imageEditor()
                                     ->label('Footer Background Image')
                                     ->disk('public')
                                     ->directory('branding')
