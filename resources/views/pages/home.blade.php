@@ -294,13 +294,47 @@
                     <p class="mt-2 text-sm text-white/70">Dapatkan info terbaru villa, tips wisata, dan penawaran
                         spesial.</p>
                 </div>
-                <form x-data="{ email: '', terkirim: false }" x-on:submit.prevent="terkirim = true"
-                    class="flex flex-col sm:flex-row gap-3 reveal-slide-left delay-200">
-                    <label for="newsletter-email" class="sr-only">Alamat email</label>
-                    <input x-model="email" id="newsletter-email" type="email" required placeholder="Masukkan email Anda"
-                        class="flex-1 bg-transparent border border-white/30 text-white placeholder-white/50 px-4 py-3 text-sm focus:border-white/60 focus:ring-0">
-                    <button type="submit" class="btn-outline-light shrink-0"
-                        x-text="terkirim ? 'Sudah Berlangganan!' : 'Berlangganan'">Berlangganan</button>
+                <form x-data="{ 
+                        email: '', 
+                        terkirim: false, 
+                        pesan: '', 
+                        loading: false,
+                        kirim() {
+                            if (!this.email) return;
+                            this.loading = true;
+                            fetch('{{ route('newsletter.subscribe') }}', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                                },
+                                body: JSON.stringify({ email: this.email })
+                            })
+                            .then(res => res.json())
+                            .then(data => {
+                                this.loading = false;
+                                this.terkirim = true;
+                                this.pesan = data.message;
+                                this.email = '';
+                            })
+                            .catch(err => {
+                                this.loading = false;
+                                this.pesan = 'Terjadi kesalahan. Silakan coba lagi.';
+                            });
+                        }
+                    }" 
+                    x-on:submit.prevent="kirim()"
+                    class="flex flex-col sm:flex-row gap-3 reveal-slide-left delay-200 w-full">
+                    <div class="flex-1 flex flex-col gap-1">
+                        <label for="newsletter-email" class="sr-only">Alamat email</label>
+                        <input x-model="email" id="newsletter-email" type="email" required placeholder="Masukkan email Anda"
+                            class="w-full bg-transparent border border-white/30 text-white placeholder-white/50 px-4 py-3 text-sm focus:border-white/60 focus:ring-0">
+                        <template x-if="pesan">
+                            <span class="text-xs mt-1 text-white/90" x-text="pesan"></span>
+                        </template>
+                    </div>
+                    <button type="submit" class="btn-outline-light shrink-0 h-[46px]" :disabled="loading"
+                        x-text="loading ? 'Memproses...' : (terkirim ? 'Terdaftar!' : 'Berlangganan')">Berlangganan</button>
                 </form>
             </div>
         </div>

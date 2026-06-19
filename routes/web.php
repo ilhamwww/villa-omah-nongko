@@ -19,3 +19,7 @@ Route::redirect('/journal', '/journey', 301);
 // SEO
 Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap');
 Route::get('/robots.txt', [SitemapController::class, 'robots'])->name('robots');
+
+// Newsletter
+use App\Http\Controllers\NewsletterController;
+Route::post('/newsletter/subscribe', [NewsletterController::class, 'subscribe'])->name('newsletter.subscribe');
