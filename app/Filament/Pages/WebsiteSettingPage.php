@@ -93,6 +93,8 @@ class WebsiteSettingPage extends Page implements HasForms
                                     ->imageEditor()
                                     ->disk('public')
                                     ->directory('branding')
+                                    ->optimize('webp')
+                                    ->maxImageWidth(800)
                                     ->image(),
                                 Forms\Components\FileUpload::make('default_hero_image')
                                     ->imageEditor()
