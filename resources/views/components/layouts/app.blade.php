@@ -45,9 +45,53 @@
         body {
             position: relative
         }
+        /* Loading Screen Styles */
+        .loading-screen {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            background-color: #171A11;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.5s ease-out, visibility 0.5s ease-out;
+        }
+        .loading-screen.fade-out {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+        .leaf-loader {
+            width: 80px;
+            height: 80px;
+            color: #FBFAF8;
+            stroke: currentColor;
+            animation: pulse-spin 2s infinite ease-in-out;
+        }
+        @keyframes pulse-spin {
+            0% {
+                transform: scale(0.9) rotate(0deg);
+                opacity: 0.6;
+            }
+            50% {
+                transform: scale(1.15) rotate(15deg);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(0.9) rotate(0deg);
+                opacity: 0.6;
+            }
+        }
     </style>
 </head>
 <body class="min-h-screen flex flex-col overflow-x-hidden" x-data="{ mobileMenu: false }">
+    {{-- Loading Screen --}}
+    <div id="loader" class="loading-screen">
+        <svg class="leaf-loader" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
+            <path stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" d="M4 20c0-9 7-16 16-16-1 9-6 14-12 15M9 15l11-11"></path>
+        </svg>
+    </div>
+
     {{-- Skip to content for accessibility --}}
     <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:bg-primary focus:text-white focus:px-4 focus:py-2">
         Langsung ke isi
@@ -82,5 +126,18 @@
         class="fixed bottom-6 right-6 z-30 w-14 h-14 bg-primary/80 text-white rounded-md hover:bg-primary shadow-soft transition-colors hidden lg:flex items-center justify-center p-0">
         <x-ui.icon name="arrow-up" class="w-6 h-6 block" />
     </button>
+    <script>
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                const loader = document.getElementById('loader');
+                if (loader) {
+                    loader.classList.add('fade-out');
+                    setTimeout(() => {
+                        loader.remove();
+                    }, 500); // Tunggu sampai transisi fade-out CSS selesai
+                }
+            }, 300); // Sedikit delay minimal sebelum menyembunyikan
+        });
+    </script>
 </body>
 </html>
