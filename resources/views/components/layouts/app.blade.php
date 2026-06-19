@@ -30,9 +30,12 @@
     @endphp
     <link rel="icon" type="image/svg+xml" href="{{ $faviconUrl }}">
 
-    {{-- Preload hero font --}}
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    {{-- Preload font to improve FCP and reduce unused CSS impact --}}
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" as="style" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'">
+    <noscript>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap">
+    </noscript>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <style>
