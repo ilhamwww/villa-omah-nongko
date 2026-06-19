@@ -296,6 +296,7 @@
                 </div>
                 <form x-data="{ 
                         email: '', 
+                        honeypot: '',
                         terkirim: false, 
                         pesan: '', 
                         loading: false,
@@ -308,9 +309,14 @@
                                     'Content-Type': 'application/json',
                                     'X-CSRF-TOKEN': '{{ csrf_token() }}'
                                 },
-                                body: JSON.stringify({ email: this.email })
+                                body: JSON.stringify({ email: this.email, honeypot: this.honeypot })
                             })
-                            .then(res => res.json())
+                            .then(res => {
+                                if (res.status === 429) {
+                                    throw new Error('Terlalu banyak mencoba. Silakan tunggu beberapa saat.');
+                                }
+                                return res.json();
+                            })
                             .then(data => {
                                 this.loading = false;
                                 this.terkirim = true;
@@ -319,7 +325,7 @@
                             })
                             .catch(err => {
                                 this.loading = false;
-                                this.pesan = 'Terjadi kesalahan. Silakan coba lagi.';
+                                this.pesan = err.message || 'Terjadi kesalahan. Silakan coba lagi.';
                             });
                         }
                     }" 
@@ -329,6 +335,12 @@
                         <label for="newsletter-email" class="sr-only">Alamat email</label>
                         <input x-model="email" id="newsletter-email" type="email" required placeholder="Masukkan email Anda"
                             class="w-full bg-transparent border border-white/30 text-white placeholder-white/50 px-4 py-3 text-sm focus:border-white/60 focus:ring-0">
+                        
+                        {{-- Honeypot Field --}}
+                        <div class="hidden" aria-hidden="true">
+                            <input x-model="honeypot" type="text" name="honeypot" tabindex="-1" autocomplete="off">
+                        </div>
+
                         <template x-if="pesan">
                             <span class="text-xs mt-1 text-white/90" x-text="pesan"></span>
                         </template>

@@ -22,4 +22,6 @@ Route::get('/robots.txt', [SitemapController::class, 'robots'])->name('robots');
 
 // Newsletter
 use App\Http\Controllers\NewsletterController;
-Route::post('/newsletter/subscribe', [NewsletterController::class, 'subscribe'])->name('newsletter.subscribe');
+Route::post('/newsletter/subscribe', [NewsletterController::class, 'subscribe'])
+    ->name('newsletter.subscribe')
+    ->middleware('throttle:5,1'); // Membatasi maksimal 5 request per menit per IP untuk mencegah spam

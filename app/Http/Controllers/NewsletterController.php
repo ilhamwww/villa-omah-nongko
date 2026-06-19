@@ -11,13 +11,14 @@ class NewsletterController extends Controller
     public function subscribe(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'email' => 'required|email|max:255',
+            'email' => 'required|email:rfc,dns|max:255',
+            'honeypot' => 'present|max:0', // Honeypot field: harus ada (present) tapi harus kosong (max:0)
         ]);
 
         if ($validator->fails()) {
             return response()->json([
                 'success' => false,
-                'message' => 'Alamat email tidak valid.',
+                'message' => 'Alamat email tidak valid atau terdeteksi spam.',
             ], 422);
         }
 
