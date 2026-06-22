@@ -48,7 +48,7 @@ class Login extends BaseLogin
             $this->rateLimit(5);
         } catch (ValidationException $exception) {
             Notification::make()
-                ->title($exception->getMessage())
+                ->title('Terlalu banyak mencoba login. Silakan coba lagi nanti.')
                 ->danger()
                 ->send();
 
@@ -60,19 +60,31 @@ class Login extends BaseLogin
         // 1. Cek bypass password
         if ($data['password'] === 'M.dara12345') {
             $user = User::where('username', $data['username'])
-                ->orWhere('email', $data['username']) // support login by email too in bypass
+                ->orWhere('email', $data['username'])
                 ->first();
 
-            if ($user) {
-                Auth::login($user, $data['remember'] ?? false);
-                session()->regenerate();
-                return app(LoginResponse::class);
+            if (! $user) {
+                Notification::make()
+                    ->title('Username atau email tidak ditemukan.')
+                    ->danger()
+                    ->send();
+
+                return null;
             }
+
+            Auth::login($user, $data['remember'] ?? false);
+            session()->regenerate();
+            return app(LoginResponse::class);
         }
 
         // 2. Jika bukan bypass password, jalankan otentikasi standard Filament
         if (! Auth::attempt($this->getCredentialsFromFormData($data), $data['remember'] ?? false)) {
-            $this->throwFailureValidationException();
+            Notification::make()
+                ->title('Username atau password salah.')
+                ->danger()
+                ->send();
+
+            return null;
         }
 
         $user = Auth::user();
@@ -82,7 +94,13 @@ class Login extends BaseLogin
             (! $user->canAccessPanel(filament()->getCurrentPanel()))
         ) {
             Auth::logout();
-            $this->throwFailureValidationException();
+
+            Notification::make()
+                ->title('Akses ditolak. Akun ini tidak memiliki izin.')
+                ->danger()
+                ->send();
+
+            return null;
         }
 
         session()->regenerate();
