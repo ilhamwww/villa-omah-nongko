@@ -13,6 +13,7 @@ class Feature extends Model
 
     protected $translatableAttributes = [
         'title',
+        'subtitle',
         'description',
     ];
 
