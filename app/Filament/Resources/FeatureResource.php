@@ -60,7 +60,15 @@ class FeatureResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('title')->searchable()->sortable(),
+                Tables\Columns\TextColumn::make('title')
+                    ->label('Title (Indonesian)')
+                    ->getStateUsing(fn ($record) => $record->getRawOriginal('title'))
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('translationEn.title')
+                    ->label('Title (English)')
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('page_key')->badge()->sortable(),
                 Tables\Columns\TextColumn::make('icon')
                     ->formatStateUsing(fn ($state) => new \Illuminate\Support\HtmlString(

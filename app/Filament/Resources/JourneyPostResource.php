@@ -45,9 +45,6 @@ class JourneyPostResource extends Resource
                                 ->required()
                                 ->live(onBlur: true)
                                 ->afterStateUpdated(function (Get $get, Set $set, ?string $old, ?string $state) {
-                                    if (($get('slug') ?? '') !== Str::slug($old)) {
-                                        return;
-                                    }
                                     $set('slug', Str::slug($state));
                                 }),
                             Forms\Components\TextInput::make('slug')
@@ -74,13 +71,9 @@ class JourneyPostResource extends Resource
                                         ->label('Title')
                                         ->live(onBlur: true)
                                         ->afterStateUpdated(function (Get $get, Set $set, ?string $old, ?string $state) {
-                                            if (($get('slug') ?? '') !== Str::slug($old)) {
-                                                return;
-                                            }
                                             $set('slug', Str::slug($state));
                                         }),
-                                    Forms\Components\TextInput::make('slug')
-                                        ->helperText('Automatically generated from title. Can be changed if needed.'),
+                                    Forms\Components\TextInput::make('slug'),
                                     Forms\Components\RichEditor::make('content')
                                         ->label('Post Content'),
                                     Forms\Components\Section::make('SEO Metadata')

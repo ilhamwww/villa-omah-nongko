@@ -29,15 +29,15 @@
         '@context' => 'https://schema.org',
         '@type' => 'BreadcrumbList',
         'itemListElement' => [
-            ['@type' => 'ListItem', 'position' => 1, 'name' => 'Beranda', 'item' => route('home.index')],
-            ['@type' => 'ListItem', 'position' => 2, 'name' => 'Cerita', 'item' => route('journey.index')],
+            ['@type' => 'ListItem', 'position' => 1, 'name' => __('home'), 'item' => route('home.index')],
+            ['@type' => 'ListItem', 'position' => 2, 'name' => __('journey'), 'item' => route('journey.index')],
             ['@type' => 'ListItem', 'position' => 3, 'name' => $artikel['judul'], 'item' => $canonical],
         ],
     ];
 @endphp
 
 <x-layouts.app
-    :title="$artikel['judul'] . ' — Cerita Omah Nongko'"
+    :title="$artikel['judul'] . ' — ' . __('Cerita Omah Nongko')"
     :description="$artikel['ringkasan']"
     :canonical="$canonical"
     :ogImage="$artikel['foto']"
@@ -66,7 +66,7 @@
                         <span>&middot;</span>
                         <span class="flex items-center gap-1">
                             <x-ui.icon name="eye" class="w-4 h-4 opacity-80" />
-                            {{ $artikel['views'] }} dilihat
+                            {{ __(':count dilihat', ['count' => $artikel['views']]) }}
                         </span>
                     </div>
                 </div>
@@ -77,9 +77,9 @@
         <nav class="border-b border-border-light" aria-label="Breadcrumb">
             <div class="container-site py-4">
                 <ol class="flex items-center gap-2 text-xs text-text-muted">
-                    <li><a href="{{ route('home.index') }}" class="hover:text-text-main">Beranda</a></li>
+                    <li><a href="{{ route('home.index') }}" class="hover:text-text-main">{{ __('Beranda') }}</a></li>
                     <li aria-hidden="true">/</li>
-                    <li><a href="{{ route('journey.index') }}" class="hover:text-text-main">Cerita</a></li>
+                    <li><a href="{{ route('journey.index') }}" class="hover:text-text-main">{{ __('Cerita') }}</a></li>
                     <li aria-hidden="true">/</li>
                     <li class="text-text-main truncate max-w-[200px]">{{ $artikel['judul'] }}</li>
                 </ol>
@@ -96,10 +96,10 @@
 
                 {{-- CTA WhatsApp --}}
                 <div class="mt-10 bg-primary text-white p-8 text-center reveal-scale-up delay-200">
-                    <h2 class="font-heading text-2xl text-white">Rencanakan Menginap di Omah Nongko</h2>
-                    <p class="mt-2 text-sm text-white/70">Pesan liburan privat Anda di Yogyakarta.</p>
+                    <h2 class="font-heading text-2xl text-white">{{ __('plan_stay_omah_nongko') }}</h2>
+                    <p class="mt-2 text-sm text-white/70">{{ __('book_private_holiday') }}</p>
                     <a href="{{ $waLink }}" target="_blank" rel="noopener noreferrer" class="btn-outline-light mt-5">
-                        Pesan lewat WhatsApp
+                        {{ __('book_via_whatsapp') }}
                         <span class="w-4 h-4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title xmlns="">baseline-whatsapp</title><path fill="currentColor" d="M19.05 4.91A9.82 9.82 0 0 0 12.04 2c-5.46 0-9.91 4.45-9.91 9.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21c5.46 0 9.91-4.45 9.91-9.91c0-2.65-1.03-5.14-2.9-7.01m-7.01 15.24c-1.48 0-2.93-.4-4.2-1.15l-.3-.18l-3.12.82l.83-3.04l-.2-.31a8.26 8.26 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.24-8.24c2.2 0 4.27.86 5.82 2.42a8.18 8.18 0 0 1 2.41 5.83c.02 4.54-3.68 8.23-8.22 8.23m4.52-6.16c-.25-.12-1.47-.72-1.69-.81c-.23-.08-.39-.12-.56.12c-.17.25-.64.81-.78.97c-.14.17-.29.19-.54.06c-.25-.12-1.05-.39-1.99-1.23c-.74-.66-1.23-1.47-1.38-1.72c-.14-.25-.02-.38.11-.51c.11-.11.25-.29.37-.43s.17-.25.25-.41c.08-.17.04-.31-.02-.43s-.56-1.34-.76-1.84c-.2-.48-.41-.42-.56-.43h-.48c-.17 0-.43.06-.66.31c-.22.25-.86.85-.86 2.07s.89 2.4 1.01 2.56c.12.17 1.75 2.67 4.23 3.74c.59.26 1.05.41 1.41.52c.59.19 1.13.16 1.56.1c.48-.07 1.47-.6 1.67-1.18c.21-.58.21-1.07.14-1.18s-.22-.16-.47-.28"/></svg></span>
                     </a>
                 </div>
@@ -110,7 +110,7 @@
         @if($artikelTerkait->isNotEmpty())
             <section class="py-section-md bg-bg-soft" aria-labelledby="terkait-heading">
                 <div class="container-site">
-                    <h2 id="terkait-heading" class="font-heading text-3xl mb-8 reveal-slide-up">Artikel Terkait</h2>
+                    <h2 id="terkait-heading" class="font-heading text-3xl mb-8 reveal-slide-up">{{ __('related_articles') }}</h2>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         @foreach($artikelTerkait as $terkait)
                             <article class="group bg-bg-card border border-border-light reveal-slide-up" style="transition-delay: {{ $loop->index * 150 }}ms;">

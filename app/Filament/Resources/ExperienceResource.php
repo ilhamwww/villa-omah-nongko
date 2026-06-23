@@ -8,6 +8,10 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 
+use Filament\Forms\Get;
+use Filament\Forms\Set;
+use Illuminate\Support\Str;
+
 class ExperienceResource extends Resource
 {
     protected static ?string $model = Experience::class;
@@ -22,7 +26,12 @@ class ExperienceResource extends Resource
                 ->tabs([
                     Forms\Components\Tabs\Tab::make('Bahasa Indonesia')
                         ->schema([
-                            Forms\Components\TextInput::make('title')->required()->maxLength(255),
+                            Forms\Components\TextInput::make('title')
+                            ->required()->live(onBlur: true)
+                            ->maxLength(255)
+                                ->afterStateUpdated(function (Get $get, Set $set, ?string $old, ?string $state) {
+                                    $set('slug', Str::slug($state));
+                                }),
                             Forms\Components\TextInput::make('slug')->required()->unique(ignoreRecord: true)->maxLength(255),
                             Forms\Components\Textarea::make('description')->rows(4),
                             Forms\Components\TextInput::make('image_alt')->maxLength(255),
@@ -32,7 +41,9 @@ class ExperienceResource extends Resource
                             Forms\Components\Group::make()
                                 ->relationship('translationEn')
                                 ->schema([
-                                    Forms\Components\TextInput::make('title')->maxLength(255),
+                                    Forms\Components\TextInput::make('title')->maxLength(255)->afterStateUpdated(function (Get $get, Set $set, ?string $old, ?string $state) {
+                                    $set('slug', Str::slug($state));
+                                })->live(onBlur: true),
                                     Forms\Components\TextInput::make('slug')->maxLength(255),
                                     Forms\Components\Textarea::make('description')->rows(4),
                                     Forms\Components\TextInput::make('image_alt')->maxLength(255),

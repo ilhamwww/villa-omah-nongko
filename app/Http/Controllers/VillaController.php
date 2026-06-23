@@ -65,7 +65,10 @@ class VillaController extends Controller
         // Kategori galeri beserta foto-fotonya
         $kategoriGaleri = GalleryCategory::where('is_active', true)
             ->orderBy('sort_order')
-            ->with(['images' => fn ($q) => $q->where('is_active', true)->orderBy('sort_order')])
+            ->with([
+                'translationEn',
+                'images' => fn ($q) => $q->where('is_active', true)->orderBy('sort_order')
+            ])
             ->get()
             ->map(fn ($c) => [
                 'nama' => $c->name,

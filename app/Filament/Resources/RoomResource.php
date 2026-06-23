@@ -9,7 +9,9 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-
+use Filament\Forms\Get;
+use Filament\Forms\Set;
+use Illuminate\Support\Str;
 class RoomResource extends Resource
 {
     protected static ?string $model = Room::class;
@@ -24,8 +26,18 @@ class RoomResource extends Resource
                 ->tabs([
                     Forms\Components\Tabs\Tab::make('Bahasa Indonesia')
                         ->schema([
-                            Forms\Components\TextInput::make('title')->required()->maxLength(255),
-                            Forms\Components\TextInput::make('slug')->required()->unique(ignoreRecord: true)->maxLength(255),
+                            Forms\Components\TextInput::make('title')
+                                ->required()
+                                ->maxLength(255)
+                                ->live(onBlur: true)
+                                ->afterStateUpdated(function (Get $get, Set $set, ?string $old, ?string $state) {
+                                    $set('slug', Str::slug($state));
+                                }),
+                            Forms\Components\TextInput::make('slug')
+                                ->helperText('Otomatis dibuat dari judul. Bisa diubah jika perlu.')
+                                ->required()
+                                ->unique(ignoreRecord: true)
+                                ->maxLength(255),
                             Forms\Components\TextInput::make('bed_type')->helperText('e.g. King Size / Twin Bed')->maxLength(255),
                             Forms\Components\Textarea::make('short_description')->rows(2)->maxLength(500),
                             Forms\Components\Textarea::make('description')->rows(4),
@@ -38,12 +50,21 @@ class RoomResource extends Resource
                             Forms\Components\Group::make()
                                 ->relationship('translationEn')
                                 ->schema([
-                                    Forms\Components\TextInput::make('title')->maxLength(255),
-                                    Forms\Components\TextInput::make('slug')->maxLength(255),
-                                    Forms\Components\TextInput::make('bed_type')->maxLength(255),
+                                    Forms\Components\TextInput::make('title')
+                                        ->maxLength(255)
+                                        ->live(onBlur: true)
+                                        ->afterStateUpdated(function (Get $get, Set $set, ?string $old, ?string $state) {
+                                            $set('slug', Str::slug($state));
+                                        }),
+                                    Forms\Components\TextInput::make('slug')
+                                        ->helperText('Automatically generated from title. Can be changed if needed.')
+                                        // ->required()
+                                        ->unique(ignoreRecord: true)
+                                        ->maxLength(255),
+                                    Forms\Components\TextInput::make('bed_type')->helperText('e.g. King Size / Twin Bed')->maxLength(255),
                                     Forms\Components\Textarea::make('short_description')->rows(2)->maxLength(500),
                                     Forms\Components\Textarea::make('description')->rows(4),
-                                    Forms\Components\TextInput::make('button_label')->maxLength(255),
+                                    Forms\Components\TextInput::make('button_label')->helperText('e.g. Book this room')->maxLength(255),
                                     Forms\Components\TextInput::make('button_url')->maxLength(255),
                                     Forms\Components\TextInput::make('image_alt')->maxLength(255),
                                 ]),
@@ -64,7 +85,15 @@ class RoomResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\ImageColumn::make('image')->disk('public')->circular(),
-                Tables\Columns\TextColumn::make('title')->searchable()->sortable(),
+                Tables\Columns\TextColumn::make('title')
+                    ->label('Title (Indonesian)')
+                    ->getStateUsing(fn ($record) => $record->getRawOriginal('title'))
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('translationEn.title')
+                    ->label('Title (English)')
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('bed_type'),
                 Tables\Columns\IconColumn::make('is_featured')->boolean(),
                 Tables\Columns\IconColumn::make('is_active')->boolean(),

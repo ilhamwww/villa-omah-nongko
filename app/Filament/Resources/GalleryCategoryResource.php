@@ -19,9 +19,33 @@ class GalleryCategoryResource extends Resource
     public static function form(Form $form): Form
     {
         return $form->schema([
-            Forms\Components\TextInput::make('name')->required(),
-            Forms\Components\TextInput::make('slug')->required()->unique(ignoreRecord: true),
-            Forms\Components\Textarea::make('description')->rows(2),
+            Forms\Components\Tabs::make('Gallery Category Translations')
+                ->tabs([
+                    Forms\Components\Tabs\Tab::make('Bahasa Indonesia')
+                        ->schema([
+                            Forms\Components\TextInput::make('name')
+                                ->required()
+                                ->live(onBlur: true)
+                                ->afterStateUpdated(fn ($state, Forms\Set $set) => $set('slug', \Illuminate\Support\Str::slug($state))),
+                            Forms\Components\TextInput::make('slug')
+                                ->required()
+                                ->unique(ignoreRecord: true),
+                            Forms\Components\Textarea::make('description')->rows(2),
+                        ]),
+                    Forms\Components\Tabs\Tab::make('English')
+                        ->schema([
+                            Forms\Components\Group::make()
+                                ->relationship('translationEn')
+                                ->schema([
+                                    Forms\Components\TextInput::make('name')
+                                        ->live(onBlur: true)
+                                        ->afterStateUpdated(fn ($state, Forms\Set $set) => $set('slug', \Illuminate\Support\Str::slug($state))),
+                                    Forms\Components\TextInput::make('slug'),
+                                    Forms\Components\Textarea::make('description')->rows(2),
+                                ]),
+                        ]),
+                ])
+                ->columnSpanFull(),
             Forms\Components\TextInput::make('sort_order')->numeric()->default(0),
             Forms\Components\Toggle::make('is_active')->default(true),
         ]);
@@ -31,7 +55,15 @@ class GalleryCategoryResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')->searchable()->sortable(),
+                Tables\Columns\TextColumn::make('name')
+                    ->label('Name (Indonesian)')
+                    ->getStateUsing(fn ($record) => $record->getRawOriginal('name'))
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('translationEn.name')
+                    ->label('Name (English)')
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('slug'),
                 Tables\Columns\TextColumn::make('images_count')->counts('images')->label('Images'),
                 Tables\Columns\IconColumn::make('is_active')->boolean(),

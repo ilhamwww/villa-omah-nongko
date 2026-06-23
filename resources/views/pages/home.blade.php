@@ -1,10 +1,10 @@
 @php
     $waLink = \App\Helpers\WhatsAppHelper::link();
     $gambar = config('villa.images');
-    $judulHero = $halaman?->hero_title ?: 'Villa Omah Nongko';
-    $deskripsiHero = $halaman?->hero_description ?: "Villa Omah Nongko adalah villa privat 5 kamar tidur yang memadukan arsitektur unik dengan kehidupan tropis yang luas. Terletak di Sleman, Yogyakarta, dikelilingi alam yang asri dan sejuk.";
+    $judulHero = $halaman?->hero_title ?: __('Villa Omah Nongko');
+    $deskripsiHero = $halaman?->hero_description ?: __("Villa Omah Nongko adalah villa privat 5 kamar tidur yang memadukan arsitektur unik dengan kehidupan tropis yang luas. Terletak di Sleman, Yogyakarta, dikelilingi alam yang asri dan sejuk.");
     $fotoHero = $halaman?->hero_image ? asset('storage/' . $halaman?->hero_image) : $gambar['hero_home'];
-    $altFotoHero = $halaman?->hero_image_alt ?: 'Villa Omah Nongko dengan taman tropis di Yogyakarta';
+    $altFotoHero = $halaman?->hero_image_alt ?: __('Villa Omah Nongko dengan taman tropis di Yogyakarta');
     
     // Fallback static if not exists in Page content_blocks
     $fotoAboutLarge = !empty($halaman?->content_blocks['about_large']) ? asset('storage/' . $halaman->content_blocks['about_large']) : $gambar['about_large'];
@@ -32,15 +32,15 @@
     ];
 @endphp
 
-<x-layouts.app :title="$halaman?->seo_title ?: 'Villa Omah Nongko — Villa Tropis Privat di Yogyakarta'"
-    :description="$halaman?->seo_description ?: 'Villa privat di Yogyakarta yang memadukan arsitektur unik, kehidupan tropis yang luas, dan taman hijau di Sleman.'" :ogImage="$halaman?->og_image ? asset('storage/' . $halaman?->og_image) : $fotoHero" :schema="$schema" footerVariant="dark">
+<x-layouts.app :title="$halaman?->seo_title ?: __('Villa Omah Nongko — Villa Tropis Privat di Yogyakarta')"
+    :description="$halaman?->seo_description ?: __('Villa privat di Yogyakarta yang memadukan arsitektur unik, kehidupan tropis yang luas, dan taman hijau di Sleman.')" :ogImage="$halaman?->og_image ? asset('storage/' . $halaman?->og_image) : $fotoHero" :schema="$schema" footerVariant="dark">
 
     {{-- Hero --}}
     <x-ui.hero :title="$judulHero" :description="$deskripsiHero" :image="$fotoHero" :imageAlt="$altFotoHero"
-        ctaLabel="Jelajahi Villa" :ctaUrl="route('the-villa')" :isHome="true" />
+        :ctaLabel="__('explore_villa')" :ctaUrl="route('the-villa')" :isHome="true" />
 
     {{-- Fakta Singkat --}}
-    <section class="bg-bg-soft border-b border-border-light overflow-hidden" aria-label="Fakta singkat">
+    <section class="bg-bg-soft border-b border-border-light overflow-hidden" aria-label="{{ __('quick_facts') }}">
         <div class="container-site py-8">
             {{-- Mobile: auto-scroll marquee --}}
             <div class="md:hidden relative overflow-hidden marquee-mask">
@@ -75,24 +75,21 @@
         <div class="container-site">
             <div class="grid grid-cols-1 lg:grid-cols-[0.9fr_1.4fr] gap-12 lg:gap-[72px] items-center">
                 <div class="reveal-slide-right">
-                    <p class="eyebrow">Tentang Omah Nongko</p>
+                    <p class="eyebrow">{{ __('about_omah_nongko') }}</p>
                     <h2 id="tentang-heading"
-                        class="mt-3 font-heading text-3xl md:text-4xl lg:text-[42px] leading-tight">Villa Privat yang
-                        Dikelilingi Alam</h2>
-                    <p class="mt-5 text-text-muted text-sm md:text-base leading-relaxed">Dibangun dengan filosofi
-                        keselarasan antara arsitektur dan alam, Omah Nongko menawarkan tempat peristirahatan yang tenang
-                        dengan ruang terbuka, material alami, dan taman tropis yang hijau.</p>
+                        class="mt-3 font-heading text-3xl md:text-4xl lg:text-[42px] leading-tight">{{ __('private_villa_nature') }}</h2>
+                    <p class="mt-5 text-text-muted text-sm md:text-base leading-relaxed">{{ __('built_with_philosophy') }}</p>
                     <a href="{{ route('the-villa') }}" class="btn-outline-dark mt-7">
-                        Pelajari Lebih Lanjut
+                        {{ __('learn_more') }}
                         <x-ui.icon name="arrow-right" class="w-4 h-4 btn-icon" />
                     </a>
                 </div>
                 <div class="relative min-h-[360px] md:min-h-[430px] reveal-scale-up delay-200">
                     <img src="{{ $fotoAboutLarge }}"
-                        alt="Eksterior Villa Omah Nongko dengan kolam dan taman tropis hijau" loading="lazy" width="900"
+                        alt="{{ __('Eksterior Villa Omah Nongko dengan kolam dan taman tropis hijau') }}" loading="lazy" width="900"
                         height="700" class="w-[72%] ml-auto aspect-[4/3] object-cover">
                     <img src="{{ $fotoAboutSmall }}"
-                        alt="Interior living room Villa Omah Nongko dengan material kayu natural" loading="lazy"
+                        alt="{{ __('Interior living room Villa Omah Nongko dengan material kayu natural') }}" loading="lazy"
                         width="600" height="500"
                         class="absolute left-0 bottom-6 w-[48%] aspect-[4/3] object-cover shadow-photo reveal-slide-up delay-500">
                 </div>
@@ -104,8 +101,8 @@
     <section class="py-section-md bg-bg-soft" aria-labelledby="kamar-heading">
         <div class="container-site">
             <div class="reveal-slide-up">
-                <x-ui.section-header eyebrow="Kamar & Suite" heading="Kamar Luas untuk Menginap yang Nyaman"
-                    :link="route('the-villa') . '#suites'" linkLabel="Lihat Semua Kamar" />
+                <x-ui.section-header :eyebrow="__('Kamar & Suite')" :heading="__('Kamar Luas untuk Menginap yang Nyaman')"
+                    :link="route('the-villa') . '#suites'" :linkLabel="__('Lihat Semua Kamar')" />
             </div>
 
             <div class="mt-10 grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
@@ -117,7 +114,7 @@
                                 height="450"
                                 class="w-full aspect-[4/3] object-cover transition-transform duration-700 group-hover:scale-105">
                             <div class="absolute top-4 left-4 bg-bg-card/90 backdrop-blur text-[10px] font-semibold uppercase tracking-widest px-3 py-1 text-olive">
-                                Kamar 0{{ $loop->iteration }}
+                                {{ __('Kamar') }} 0{{ $loop->iteration }}
                             </div>
                         </div>
                         <div class="p-6 md:p-8 flex flex-col flex-grow">
@@ -144,7 +141,7 @@
 
                             <a href="{{ route('the-villa') }}#suites"
                                 class="mt-8 inline-flex items-center gap-2 text-xs font-semibold tracking-widenav uppercase text-text-main hover:opacity-75 group-hover:translate-x-1 transition-transform">
-                                Lihat Detail Kamar
+                                {{ __('Lihat Detail Kamar') }}
                                 <x-ui.icon name="arrow-right" class="w-4 h-4" />
                             </a>
                         </div>
@@ -163,9 +160,9 @@
         </div>
         <div class="container-site relative z-10">
             <div class="text-center max-w-2xl mx-auto reveal-slide-up">
-                <p class="eyebrow">Keunggulan & Fasilitas</p>
+                <p class="eyebrow">{{ __('Keunggulan & Fasilitas') }}</p>
                 <h2 id="fasilitas-heading" class="mt-3 font-heading text-3xl md:text-4xl lg:text-[42px] leading-tight">
-                    Semua yang Anda Butuhkan untuk Menginap Sempurna</h2>
+                    {{ __('Semua yang Anda Butuhkan untuk Menginap Sempurna') }}</h2>
             </div>
             <div class="mt-12 flex flex-wrap justify-center gap-y-10 gap-x-6 md:gap-x-12 max-w-4xl mx-auto">
                 @foreach($fasilitas as $item)
@@ -175,8 +172,7 @@
                 @endforeach
             </div>
             <div class="mt-12 text-center reveal-fade delay-300">
-                <a href="{{ $waLink }}" target="_blank" rel="noopener noreferrer" class="btn-primary">Lihat Semua
-                    Fasilitas</a>
+                <a href="{{ $waLink }}" target="_blank" rel="noopener noreferrer" class="btn-primary">{{ __('Lihat Semua Fasilitas') }}</a>
             </div>
         </div>
     </section>
@@ -185,11 +181,10 @@
     <section id="experiences" class="py-section-md bg-bg-soft" aria-labelledby="pengalaman-heading">
         <div class="container-site">
             <div class="text-center max-w-2xl mx-auto reveal-slide-up">
-                <p class="eyebrow">Pengalaman</p>
+                <p class="eyebrow">{{ __('Pengalaman') }}</p>
                 <h2 id="pengalaman-heading" class="mt-3 font-heading text-3xl md:text-4xl lg:text-[42px] leading-tight">
-                    Dirancang untuk Momen Yogyakarta Anda</h2>
-                <p class="mt-4 text-text-muted text-sm md:text-base leading-relaxed">Dari hari santai di taman
-                    hingga menjelajahi kekayaan budaya Yogyakarta, kami menciptakan pengalaman yang selalu Anda kenang.</p>
+                    {{ __('Dirancang untuk Momen Yogyakarta Anda') }}</h2>
+                <p class="mt-4 text-text-muted text-sm md:text-base leading-relaxed">{{ __('Dari hari santai di taman hingga menjelajahi kekayaan budaya Yogyakarta, kami menciptakan pengalaman yang selalu Anda kenang.') }}</p>
             </div>
             <div class="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                 @foreach($pengalaman as $item)
@@ -209,8 +204,7 @@
                 @endforeach
             </div>
             <div class="mt-14 text-center reveal-fade delay-300">
-                <a href="{{ $waLink }}" target="_blank" rel="noopener noreferrer" class="btn-primary">Jelajahi
-                    Pengalaman</a>
+                <a href="{{ $waLink }}" target="_blank" rel="noopener noreferrer" class="btn-primary">{{ __('Jelajahi Pengalaman') }}</a>
             </div>
         </div>
     </section>
@@ -219,9 +213,9 @@
     <section id="reviews" class="py-section-md md:py-section-lg" aria-labelledby="ulasan-heading">
         <div class="container-site">
             <div class="text-center max-w-2xl mx-auto reveal-slide-up">
-                <p class="eyebrow">Ulasan Tamu</p>
+                <p class="eyebrow">{{ __('Ulasan Tamu') }}</p>
                 <h2 id="ulasan-heading" class="mt-3 font-heading text-3xl md:text-4xl lg:text-[42px] leading-tight">
-                    Disukai Para Tamu Kami</h2>
+                    {{ __('Disukai Para Tamu Kami') }}</h2>
             </div>
             <div class="mt-12 grid grid-cols-1 md:grid-cols-2 gap-10 lg:gap-16 max-w-4xl mx-auto">
                 @foreach($ulasanTamu as $ulasan)
@@ -248,10 +242,10 @@
         <div class="container-site">
             <div class="grid grid-cols-1 lg:grid-cols-[1fr_1.3fr] gap-12 items-center">
                 <div class="reveal-slide-right">
-                    <p class="eyebrow">Lokasi Kami</p>
-                    <h2 id="lokasi-heading" class="mt-3 font-heading text-3xl md:text-4xl leading-tight">Lokasi & Akses Mudah</h2>
+                    <p class="eyebrow">{{ __('Lokasi Kami') }}</p>
+                    <h2 id="lokasi-heading" class="mt-3 font-heading text-3xl md:text-4xl leading-tight">{{ __('Lokasi & Akses Mudah') }}</h2>
                     <p class="mt-5 text-text-muted text-sm md:text-base leading-relaxed">
-                        Villa Omah Nongko terletak di Sleman, Yogyakarta, daerah sejuk yang dikelilingi keindahan alam pedesaan. Lokasi kami sangat strategis dan menawarkan kedamaian yang sempurna untuk liburan keluarga maupun reuni.
+                        {{ __('Villa Omah Nongko terletak di Sleman, Yogyakarta, daerah sejuk yang dikelilingi keindahan alam pedesaan. Lokasi kami sangat strategis dan menawarkan kedamaian yang sempurna untuk liburan keluarga maupun reuni.') }}
                     </p>
                     <div class="mt-6 flex flex-col gap-4">
                         <div class="flex items-start gap-3">
@@ -259,13 +253,13 @@
                                 <x-ui.icon name="pin" class="w-4 h-4" />
                             </span>
                             <div>
-                                <h4 class="font-semibold text-text-main text-sm">Alamat Lengkap</h4>
+                                <h4 class="font-semibold text-text-main text-sm">{{ __('Alamat Lengkap') }}</h4>
                                 <p class="text-xs text-text-muted mt-1 leading-relaxed">{{ config('villa.identity.address') }}</p>
                             </div>
                         </div>
                     </div>
                     <a href="{{ config('villa.identity.google_maps_url') }}" target="_blank" rel="noopener noreferrer" class="btn-primary mt-8 inline-flex items-center gap-2">
-                        Buka di Google Maps
+                        {{ __('Buka di Google Maps') }}
                         <x-ui.icon name="arrow-right" class="w-4 h-4" />
                     </a>
                 </div>
@@ -290,9 +284,8 @@
         <div class="container-site py-12 md:py-16 relative z-10">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
                 <div class="reveal-slide-right">
-                    <h2 id="newsletter-heading" class="font-heading text-3xl text-white">Dapatkan Info Terbaru</h2>
-                    <p class="mt-2 text-sm text-white/70">Dapatkan info terbaru villa, tips wisata, dan penawaran
-                        spesial.</p>
+                    <h2 id="newsletter-heading" class="font-heading text-3xl text-white">{{ __('get_latest_updates') }}</h2>
+                    <p class="mt-2 text-sm text-white/70">{{ __('get_latest_updates_desc') }}</p>
                 </div>
                 <form x-data="{ 
                         email: '', 
@@ -332,8 +325,8 @@
                     x-on:submit.prevent="kirim()"
                     class="flex flex-col sm:flex-row gap-3 reveal-slide-left delay-200 w-full">
                     <div class="flex-1 flex flex-col gap-1">
-                        <label for="newsletter-email" class="sr-only">Alamat email</label>
-                        <input x-model="email" id="newsletter-email" type="email" required placeholder="Masukkan email Anda"
+                        <label for="newsletter-email" class="sr-only">{{ __('email_address') }}</label>
+                        <input x-model="email" id="newsletter-email" type="email" required placeholder="{{ __('enter_your_email') }}"
                             class="w-full bg-transparent border border-white/30 text-white placeholder-white/50 px-4 py-3 text-sm focus:border-white/60 focus:ring-0">
                         
                         {{-- Honeypot Field --}}
@@ -346,7 +339,7 @@
                         </template>
                     </div>
                     <button type="submit" class="btn-outline-light shrink-0 h-[46px]" :disabled="loading"
-                        x-text="loading ? 'Memproses...' : (terkirim ? 'Terdaftar!' : 'Berlangganan')">Berlangganan</button>
+                        x-text="loading ? '{{ __('processing') }}' : (terkirim ? '{{ __('subscribed') }}' : '{{ __('subscribe') }}')">{{ __('subscribe') }}</button>
                 </form>
             </div>
         </div>

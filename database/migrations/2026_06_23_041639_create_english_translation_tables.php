@@ -87,6 +87,7 @@ return new class extends Migration
             $blueprint->string('title')->nullable();
             $blueprint->string('slug')->nullable();
             $blueprint->longText('content')->nullable();
+            $blueprint->string('featured_image_alt')->nullable();
             $blueprint->string('seo_title')->nullable();
             $blueprint->text('seo_description')->nullable();
             $blueprint->string('seo_keywords')->nullable();

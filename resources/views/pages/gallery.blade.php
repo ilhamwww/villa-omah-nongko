@@ -1,16 +1,16 @@
 @php
     $gambar = config('villa.images');
-    $judulHero = $halaman?->hero_title ?: 'Galeri';
-    $deskripsiHero = $halaman?->hero_description ?: 'Jelajahi keindahan Villa Omah Nongko melalui galeri kami. Setiap sudut dirancang dengan penuh perhatian untuk menyatu dengan alam dan menciptakan momen yang tak terlupakan.';
+    $judulHero = $halaman?->hero_title ?: __('Galeri');
+    $deskripsiHero = $halaman?->hero_description ?: __('Jelajahi keindahan Villa Omah Nongko melalui galeri kami. Setiap sudut dirancang dengan penuh perhatian untuk menyatu dengan alam dan menciptakan momen yang tak terlupakan.');
     $fotoHero = $halaman?->hero_image ? asset('storage/'.$halaman?->hero_image) : $gambar['hero_gallery'];
-    $altFotoHero = $halaman?->hero_image_alt ?: 'Galeri foto Villa Omah Nongko dengan kolam dan taman tropis';
+    $altFotoHero = $halaman?->hero_image_alt ?: __('Galeri foto Villa Omah Nongko dengan kolam dan taman tropis');
     $semuaFoto = collect($kategoriGaleri)->flatMap(fn ($c) => $c['daftarFoto']);
     $schema = [
         '@context' => 'https://schema.org',
         '@type' => 'CollectionPage',
-        'name' => 'Galeri — Villa Omah Nongko',
+        'name' => __('Galeri — Villa Omah Nongko'),
         'url' => route('gallery'),
-        'description' => 'Jelajahi keindahan Villa Omah Nongko melalui galeri kami.',
+        'description' => __('Jelajahi keindahan Villa Omah Nongko melalui galeri kami.'),
         'mainEntity' => [
             '@type' => 'ImageGallery',
             'image' => $semuaFoto->take(10)->map(fn ($foto) => [
@@ -23,8 +23,8 @@
 @endphp
 
 <x-layouts.app
-    :title="$halaman?->seo_title ?: 'Galeri — Villa Omah Nongko'"
-    :description="$halaman?->seo_description ?: 'Jelajahi keindahan Villa Omah Nongko melalui galeri kami. Setiap sudut dirancang untuk menyatu dengan alam dan menciptakan momen tak terlupakan.'"
+    :title="$halaman?->seo_title ?: __('Galeri — Villa Omah Nongko')"
+    :description="$halaman?->seo_description ?: __('Jelajahi keindahan Villa Omah Nongko melalui galeri kami. Setiap sudut dirancang untuk menyatu dengan alam dan menciptakan momen tak terlupakan.')"
     :ogImage="$halaman?->og_image ? asset('storage/'.$halaman?->og_image) : $fotoHero"
     :schema="$schema"
     footerVariant="light">
@@ -44,7 +44,7 @@
                     <button type="button" role="tab"
                             x-on:click="filter = 'all'"
                             :class="filter === 'all' ? 'text-text-main border-b border-text-main' : 'text-text-muted'"
-                            class="pb-1 text-xs whitespace-nowrap transition-colors">Semua</button>
+                            class="pb-1 text-xs whitespace-nowrap transition-colors">{{ __('Semua') }}</button>
                     @foreach($kategoriGaleri as $kat)
                         <button type="button" role="tab"
                                 x-on:click="filter = '{{ $kat['slug'] }}'"
@@ -55,7 +55,7 @@
                 <button type="button"
                         x-on:click="openLightbox({{ json_encode($semuaFoto->pluck('src')->all()) }}, {{ json_encode($semuaFoto->pluck('alt')->all()) }}, 0)"
                         class="btn-outline-dark shrink-0">
-                    Lihat Tayangan Foto
+                    {{ __('Lihat Tayangan Foto') }}
                     <x-ui.icon name="play" class="w-4 h-4" />
                 </button>
             </div>
@@ -71,7 +71,7 @@
                         <button type="button"
                                 x-on:click="openLightbox({{ json_encode(array_column($kat['daftarFoto'], 'src')) }}, {{ json_encode(array_column($kat['daftarFoto'], 'alt')) }}, 0)"
                                 class="nav-link text-text-main inline-flex items-center gap-2">
-                            Lihat Semua Foto
+                            {{ __('Lihat Semua Foto') }}
                             <x-ui.icon name="arrow-right" class="w-4 h-4" />
                         </button>
                     </div>

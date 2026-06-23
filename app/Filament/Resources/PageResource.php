@@ -20,122 +20,193 @@ class PageResource extends Resource
     public static function form(Form $form): Form
     {
         return $form->schema([
-            Forms\Components\Tabs::make('Page')
+            Forms\Components\Tabs::make('Page Translations')
                 ->tabs([
-                    Forms\Components\Tabs\Tab::make('Content')
+                    Forms\Components\Tabs\Tab::make('Bahasa Indonesia')
                         ->schema([
-                            Forms\Components\TextInput::make('title')->required()->maxLength(255),
-                            Forms\Components\TextInput::make('page_key')
-                                ->required()
-                                ->unique(ignoreRecord: true)
-                                ->helperText('Unique key: home, the-villa, gallery, journey'),
-                            Forms\Components\Textarea::make('hero_description')->rows(3),
-                            Forms\Components\FileUpload::make('hero_image')
-                                ->label('Hero Image (Gambar Besar)')
-                                ->imageEditor()
-                                ->disk('public')->directory('pages')->image()->optimize('webp')->maxImageWidth(1920),
-                            Forms\Components\TextInput::make('hero_title')->label('Hero Title'),
-                            Forms\Components\Select::make('status')
-                                ->options(['draft' => 'Draft', 'published' => 'Published'])
-                                ->default('published'),
-                        ]),
-                    
-                    Forms\Components\Tabs\Tab::make('Extra Content')
-                        ->schema([
-                            Forms\Components\Fieldset::make('Gambar Tentang Villa')
-                                ->schema([
-                                    Forms\Components\FileUpload::make('content_blocks.about_large')
-                                        ->label('Gambar Utama (Besar)')
-                                        ->helperText('Gambar besar yang muncul di bagian Tentang/Intro (Home & The Villa)')
-                                        ->imageEditor()
-                                        ->disk('public')->directory('pages/about')->image()->optimize('webp')->maxImageWidth(1600),
-                                    Forms\Components\FileUpload::make('content_blocks.about_small')
-                                        ->label('Gambar Pendukung (Kecil)')
-                                        ->helperText('Gambar kecil/inset yang menumpuk di atas/bawah gambar besar')
-                                        ->imageEditor()
-                                        ->disk('public')->directory('pages/about')->image()->optimize('webp')->maxImageWidth(1200),
-                                ])
-                                ->visible(fn (\Filament\Forms\Get $get) => in_array($get('page_key'), ['home', 'the-villa'])),
+                            Forms\Components\Tabs::make('Page')
+                                ->tabs([
+                                    Forms\Components\Tabs\Tab::make('Content')
+                                        ->schema([
+                                            Forms\Components\TextInput::make('title')->required()->maxLength(255),
+                                            Forms\Components\TextInput::make('page_key')
+                                                ->required()
+                                                ->unique(ignoreRecord: true)
+                                                ->helperText('Unique key: home, the-villa, gallery, journey'),
+                                            Forms\Components\Textarea::make('hero_description')->rows(3),
+                                            Forms\Components\FileUpload::make('hero_image')
+                                                ->label('Hero Image (Gambar Besar)')
+                                                ->imageEditor()
+                                                ->disk('public')->directory('pages')->image()->optimize('webp')->maxImageWidth(1920),
+                                            Forms\Components\TextInput::make('hero_title')->label('Hero Title'),
+                                            Forms\Components\Select::make('status')
+                                                ->options(['draft' => 'Draft', 'published' => 'Published'])
+                                                ->default('published'),
+                                        ]),
+                                    
+                                    Forms\Components\Tabs\Tab::make('Extra Content')
+                                        ->schema([
+                                            Forms\Components\Fieldset::make('Gambar Tentang Villa')
+                                                ->schema([
+                                                    Forms\Components\FileUpload::make('content_blocks.about_large')
+                                                        ->label('Gambar Utama (Besar)')
+                                                        ->helperText('Gambar besar yang muncul di bagian Tentang/Intro (Home & The Villa)')
+                                                        ->imageEditor()
+                                                        ->disk('public')->directory('pages/about')->image()->optimize('webp')->maxImageWidth(1600),
+                                                    Forms\Components\FileUpload::make('content_blocks.about_small')
+                                                        ->label('Gambar Pendukung (Kecil)')
+                                                        ->helperText('Gambar kecil/inset yang menumpuk di atas/bawah gambar besar')
+                                                        ->imageEditor()
+                                                        ->disk('public')->directory('pages/about')->image()->optimize('webp')->maxImageWidth(1200),
+                                                ])
+                                                ->visible(fn (\Filament\Forms\Get $get) => in_array($get('page_key'), ['home', 'the-villa'])),
 
-                            Forms\Components\Fieldset::make('Section: Hidup Selaras (The Villa)')
+                                            Forms\Components\Fieldset::make('Section: Hidup Selaras (The Villa)')
+                                                ->schema([
+                                                    Forms\Components\TextInput::make('content_blocks.harmoni_title')
+                                                        ->label('Title')
+                                                        ->default('Hidup Selaras dengan Alam'),
+                                                    Forms\Components\Textarea::make('content_blocks.harmoni_description')
+                                                        ->label('Description')
+                                                        ->rows(3)
+                                                        ->default('Ruang tamu dan ruang makan terbuka mengundang keindahan alam masuk, sementara material alami dan detail kerajinan tangan menciptakan suasana hangat yang tak lekang oleh waktu.'),
+                                                    Forms\Components\FileUpload::make('content_blocks.harmoni_image')
+                                                        ->label('Gambar Utama (Kursi Kuning/Ruang Tamu)')
+                                                        ->imageEditor()
+                                                        ->disk('public')->directory('pages/the-villa')->image()->optimize('webp')->maxImageWidth(1600),
+                                                    Forms\Components\Repeater::make('content_blocks.living_checklist')
+                                                        ->label('Checklist Items')
+                                                        ->simple(
+                                                            Forms\Components\TextInput::make('item')->required()
+                                                        )
+                                                        ->default([
+                                                            'Ruang tamu dan ruang makan konsep terbuka',
+                                                            'Dapur modern dengan peralatan lengkap',
+                                                            'Jendela besar dari lantai hingga langit-langit',
+                                                            'Material kayu jati alami & sentuhan arsitektur Jawa',
+                                                        ])
+                                                        ->columnSpanFull(),
+                                                ])
+                                                 ->visible(fn (\Filament\Forms\Get $get) => $get('page_key') === 'the-villa'),
+
+                                            Forms\Components\Fieldset::make('Section: Arsitektur (The Villa)')
+                                                ->schema([
+                                                    Forms\Components\TextInput::make('content_blocks.arsitektur_title')
+                                                        ->label('Title')
+                                                        ->default('Arsitektur'),
+                                                    Forms\Components\Textarea::make('content_blocks.arsitektur_description')
+                                                        ->label('Description')
+                                                        ->rows(3)
+                                                        ->default('Desain arsitektur Omah Nongko terinspirasi dari lengkungan dan tekstur alam tropis. Atap berbentuk daun, ruang terbuka, dan penggunaan elemen alami menciptakan villa yang terasa unik dan sangat menyatu dengan alam sekitarnya.'),
+                                                    Forms\Components\FileUpload::make('content_blocks.arsitektur_image')
+                                                        ->label('Gambar Arsitektur (Rumah Merah/Villa)')
+                                                        ->imageEditor()
+                                                        ->disk('public')->directory('pages/the-villa')->image()->optimize('webp')->maxImageWidth(1600),
+                                                ])
+                                                 ->visible(fn (\Filament\Forms\Get $get) => $get('page_key') === 'the-villa'),
+                                        ])
+                                        ->visible(fn (\Filament\Forms\Get $get) => in_array($get('page_key'), ['home', 'the-villa'])),
+                                    Forms\Components\Tabs\Tab::make('SEO')
+                                        ->schema([
+                                            Forms\Components\TextInput::make('seo_title')
+                                                ->label('SEO Title')
+                                                ->helperText('Judul halaman untuk mesin pencari (Google). Disarankan antara 50 - 60 karakter agar tidak terpotong (Maksimal 70 karakter).')
+                                                ->maxLength(70),
+                                            Forms\Components\Textarea::make('seo_description')
+                                                ->label('SEO Description')
+                                                ->helperText('Deskripsi singkat halaman untuk hasil pencarian. Disarankan antara 120 - 150 karakter agar tampil optimal (Maksimal 160 karakter).')
+                                                ->rows(2)
+                                                ->maxLength(160),
+                                            Forms\Components\TextInput::make('seo_keywords')
+                                                ->label('SEO Keywords')
+                                                ->helperText('Kata kunci yang relevan untuk halaman ini, dipisahkan dengan koma (contoh: villa jogja, private villa yogyakarta, omah nongko).'),
+                                            Forms\Components\FileUpload::make('og_image')
+                                                ->label('OG Image')
+                                                ->helperText('Gambar yang akan muncul saat link halaman ini dibagikan di media sosial (WhatsApp, Facebook, Instagram, dll). Disarankan resolusi 1200x630 piksel.')
+                                                ->disk('public')
+                                                ->directory('seo')
+                                                ->image()
+                                                ->optimize('webp')
+                                                ->maxImageWidth(1200),
+                                            Forms\Components\Toggle::make('robots_index')
+                                                ->label('Robots Index')
+                                                ->helperText('Izinkan mesin pencari (Google) untuk mengindeks halaman ini agar muncul di hasil pencarian.')
+                                                ->default(true),
+                                            Forms\Components\Toggle::make('robots_follow')
+                                                ->label('Robots Follow')
+                                                ->helperText('Izinkan crawler mesin pencari untuk mengikuti tautan/link yang ada di halaman ini.')
+                                                ->default(true),
+                                            Forms\Components\TextInput::make('canonical_url')
+                                                ->label('Canonical URL')
+                                                ->helperText('URL utama halaman ini (kosongkan jika ingin menggunakan URL default). Digunakan untuk menghindari masalah konten duplikat/SEO.')
+                                                ->url(),
+                                        ]),
+                                ])
+                                ->columnSpanFull(),
+                        ]),
+                    Forms\Components\Tabs\Tab::make('English')
+                        ->schema([
+                            Forms\Components\Group::make()
+                                ->relationship('translationEn')
                                 ->schema([
-                                    Forms\Components\TextInput::make('content_blocks.harmoni_title')
-                                        ->label('Title')
-                                        ->default('Hidup Selaras dengan Alam'),
-                                    Forms\Components\Textarea::make('content_blocks.harmoni_description')
-                                        ->label('Description')
-                                        ->rows(3)
-                                        ->default('Ruang tamu dan ruang makan terbuka mengundang keindahan alam masuk, sementara material alami dan detail kerajinan tangan menciptakan suasana hangat yang tak lekang oleh waktu.'),
-                                    Forms\Components\FileUpload::make('content_blocks.harmoni_image')
-                                        ->label('Gambar Utama (Kursi Kuning/Ruang Tamu)')
-                                        ->imageEditor()
-                                        ->disk('public')->directory('pages/the-villa')->image()->optimize('webp')->maxImageWidth(1600),
-                                    Forms\Components\Repeater::make('content_blocks.living_checklist')
-                                        ->label('Checklist Items')
-                                        ->simple(
-                                            Forms\Components\TextInput::make('item')->required()
-                                        )
-                                        ->default([
-                                            'Ruang tamu dan ruang makan konsep terbuka',
-                                            'Dapur modern dengan peralatan lengkap',
-                                            'Jendela besar dari lantai hingga langit-langit',
-                                            'Material kayu jati alami & sentuhan arsitektur Jawa',
+                                    Forms\Components\Tabs::make('Page English')
+                                        ->tabs([
+                                            Forms\Components\Tabs\Tab::make('Content')
+                                                ->schema([
+                                                    Forms\Components\TextInput::make('title')->maxLength(255),
+                                                    Forms\Components\TextInput::make('hero_title')->label('Hero Title')->maxLength(255),
+                                                    Forms\Components\Textarea::make('hero_description')->rows(3),
+                                                ]),
+                                            
+                                            Forms\Components\Tabs\Tab::make('Extra Content')
+                                                ->schema([
+                                                    Forms\Components\Fieldset::make('Section: Living in Harmony (The Villa)')
+                                                        ->schema([
+                                                            Forms\Components\TextInput::make('content_blocks.harmoni_title')
+                                                                ->label('Title')
+                                                                ->helperText('English translation for "Hidup Selaras dengan Alam"'),
+                                                            Forms\Components\Textarea::make('content_blocks.harmoni_description')
+                                                                ->label('Description')
+                                                                ->rows(3)
+                                                                ->helperText('English translation for "Ruang tamu dan ruang makan terbuka..."'),
+                                                            Forms\Components\Repeater::make('content_blocks.living_checklist')
+                                                                ->label('Checklist Items (English)')
+                                                                ->simple(
+                                                                    Forms\Components\TextInput::make('item')->required()
+                                                                )
+                                                                ->columnSpanFull(),
+                                                        ])
+                                                        ->visible(fn (\Filament\Forms\Get $get) => $get('../../page_key') === 'the-villa'),
+
+                                                    Forms\Components\Fieldset::make('Section: Architecture (The Villa)')
+                                                        ->schema([
+                                                            Forms\Components\TextInput::make('content_blocks.arsitektur_title')
+                                                                ->label('Title')
+                                                                ->helperText('English translation for "Arsitektur"'),
+                                                            Forms\Components\Textarea::make('content_blocks.arsitektur_description')
+                                                                ->label('Description')
+                                                                ->rows(3)
+                                                                ->helperText('English translation for "Desain arsitektur Omah Nongko..."'),
+                                                        ])
+                                                        ->visible(fn (\Filament\Forms\Get $get) => $get('../../page_key') === 'the-villa'),
+                                                ])
+                                                ->visible(fn (\Filament\Forms\Get $get) => in_array($get('../../page_key'), ['home', 'the-villa'])),
+                                            
+                                            Forms\Components\Tabs\Tab::make('SEO')
+                                                ->schema([
+                                                    Forms\Components\TextInput::make('seo_title')
+                                                        ->label('SEO Title')
+                                                        ->maxLength(70),
+                                                    Forms\Components\Textarea::make('seo_description')
+                                                        ->label('SEO Description')
+                                                        ->rows(2)
+                                                        ->maxLength(160),
+                                                    Forms\Components\TextInput::make('seo_keywords')
+                                                        ->label('SEO Keywords'),
+                                                ]),
                                         ])
                                         ->columnSpanFull(),
-                                ])
-                                 ->visible(fn (\Filament\Forms\Get $get) => $get('page_key') === 'the-villa'),
-
-                            Forms\Components\Fieldset::make('Section: Arsitektur (The Villa)')
-                                ->schema([
-                                    Forms\Components\TextInput::make('content_blocks.arsitektur_title')
-                                        ->label('Title')
-                                        ->default('Arsitektur'),
-                                    Forms\Components\Textarea::make('content_blocks.arsitektur_description')
-                                        ->label('Description')
-                                        ->rows(3)
-                                        ->default('Desain arsitektur Omah Nongko terinspirasi dari lengkungan dan tekstur alam tropis. Atap berbentuk daun, ruang terbuka, dan penggunaan elemen alami menciptakan villa yang terasa unik dan sangat menyatu dengan alam sekitarnya.'),
-                                    Forms\Components\FileUpload::make('content_blocks.arsitektur_image')
-                                        ->label('Gambar Arsitektur (Rumah Merah/Villa)')
-                                        ->imageEditor()
-                                        ->disk('public')->directory('pages/the-villa')->image()->optimize('webp')->maxImageWidth(1600),
-                                ])
-                                 ->visible(fn (\Filament\Forms\Get $get) => $get('page_key') === 'the-villa'),
-                        ])
-                        ->visible(fn (\Filament\Forms\Get $get) => in_array($get('page_key'), ['home', 'the-villa'])),
-                    Forms\Components\Tabs\Tab::make('SEO')
-                        ->schema([
-                            Forms\Components\TextInput::make('seo_title')
-                                ->label('SEO Title')
-                                ->helperText('Judul halaman untuk mesin pencari (Google). Disarankan antara 50 - 60 karakter agar tidak terpotong (Maksimal 70 karakter).')
-                                ->maxLength(70),
-                            Forms\Components\Textarea::make('seo_description')
-                                ->label('SEO Description')
-                                ->helperText('Deskripsi singkat halaman untuk hasil pencarian. Disarankan antara 120 - 150 karakter agar tampil optimal (Maksimal 160 karakter).')
-                                ->rows(2)
-                                ->maxLength(160),
-                            Forms\Components\TextInput::make('seo_keywords')
-                                ->label('SEO Keywords')
-                                ->helperText('Kata kunci yang relevan untuk halaman ini, dipisahkan dengan koma (contoh: villa jogja, private villa yogyakarta, omah nongko).'),
-                            Forms\Components\FileUpload::make('og_image')
-                                ->label('OG Image')
-                                ->helperText('Gambar yang akan muncul saat link halaman ini dibagikan di media sosial (WhatsApp, Facebook, Instagram, dll). Disarankan resolusi 1200x630 piksel.')
-                                ->disk('public')
-                                ->directory('seo')
-                                ->image()
-                                ->optimize('webp')
-                                ->maxImageWidth(1200),
-                            Forms\Components\Toggle::make('robots_index')
-                                ->label('Robots Index')
-                                ->helperText('Izinkan mesin pencari (Google) untuk mengindeks halaman ini agar muncul di hasil pencarian.')
-                                ->default(true),
-                            Forms\Components\Toggle::make('robots_follow')
-                                ->label('Robots Follow')
-                                ->helperText('Izinkan crawler mesin pencari untuk mengikuti tautan/link yang ada di halaman ini.')
-                                ->default(true),
-                            Forms\Components\TextInput::make('canonical_url')
-                                ->label('Canonical URL')
-                                ->helperText('URL utama halaman ini (kosongkan jika ingin menggunakan URL default). Digunakan untuk menghindari masalah konten duplikat/SEO.')
-                                ->url(),
+                                ]),
                         ]),
                 ])
                 ->columnSpanFull(),
