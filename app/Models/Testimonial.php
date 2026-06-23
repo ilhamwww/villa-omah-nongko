@@ -2,11 +2,19 @@
 
 namespace App\Models;
 
+use App\Models\Traits\HasEnglishTranslation;
 use Illuminate\Database\Eloquent\Model;
 
 class Testimonial extends Model
 {
+    use HasEnglishTranslation;
+
     protected $guarded = [];
+
+    protected $translatableAttributes = [
+        'role',
+        'content',
+    ];
 
     protected $casts = [
         'is_active' => 'boolean',

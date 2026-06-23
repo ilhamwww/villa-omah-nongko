@@ -2,12 +2,21 @@
 
 namespace App\Models;
 
+use App\Models\Traits\HasEnglishTranslation;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class JourneyCategory extends Model
 {
+    use HasEnglishTranslation;
+
     protected $guarded = [];
+
+    protected $translatableAttributes = [
+        'name',
+        'slug',
+        'description',
+    ];
 
     protected $casts = [
         'is_active' => 'boolean',

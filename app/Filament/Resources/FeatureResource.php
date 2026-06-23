@@ -24,16 +24,33 @@ class FeatureResource extends Resource
                 ->required()
                 ->helperText('e.g. home, the-villa, gallery, journey')
                 ->maxLength(255),
-                Forms\Components\Select::make('icon')
-                    ->options(\App\Helpers\IconHelper::getHtmlOptions())
-                    ->allowHtml()
-                    ->live()
-                    ->required()
-                    ->searchable()
-                    ->helperText('Select the icon for this feature.'),
-            Forms\Components\TextInput::make('title')->required()->maxLength(255),
-            Forms\Components\TextInput::make('subtitle')->maxLength(255),
-            Forms\Components\Textarea::make('description')->rows(3),
+            Forms\Components\Select::make('icon')
+                ->options(\App\Helpers\IconHelper::getHtmlOptions())
+                ->allowHtml()
+                ->live()
+                ->required()
+                ->searchable()
+                ->helperText('Select the icon for this feature.'),
+            Forms\Components\Tabs::make('Feature Translations')
+                ->tabs([
+                    Forms\Components\Tabs\Tab::make('Bahasa Indonesia')
+                        ->schema([
+                            Forms\Components\TextInput::make('title')->required()->maxLength(255),
+                            Forms\Components\TextInput::make('subtitle')->maxLength(255),
+                            Forms\Components\Textarea::make('description')->rows(3),
+                        ]),
+                    Forms\Components\Tabs\Tab::make('English')
+                        ->schema([
+                            Forms\Components\Group::make()
+                                ->relationship('translationEn')
+                                ->schema([
+                                    Forms\Components\TextInput::make('title')->maxLength(255),
+                                    Forms\Components\TextInput::make('subtitle')->maxLength(255),
+                                    Forms\Components\Textarea::make('description')->rows(3),
+                                ]),
+                        ]),
+                ])
+                ->columnSpanFull(),
             Forms\Components\TextInput::make('sort_order')->numeric()->default(0),
             Forms\Components\Toggle::make('is_active')->default(true),
         ]);

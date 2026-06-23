@@ -18,13 +18,31 @@ class ExperienceResource extends Resource
     public static function form(Form $form): Form
     {
         return $form->schema([
-            Forms\Components\TextInput::make('title')->required()->maxLength(255),
-            Forms\Components\TextInput::make('slug')->required()->unique(ignoreRecord: true)->maxLength(255),
-            Forms\Components\Textarea::make('description')->rows(4),
+            Forms\Components\Tabs::make('Experience Translations')
+                ->tabs([
+                    Forms\Components\Tabs\Tab::make('Bahasa Indonesia')
+                        ->schema([
+                            Forms\Components\TextInput::make('title')->required()->maxLength(255),
+                            Forms\Components\TextInput::make('slug')->required()->unique(ignoreRecord: true)->maxLength(255),
+                            Forms\Components\Textarea::make('description')->rows(4),
+                            Forms\Components\TextInput::make('image_alt')->maxLength(255),
+                        ]),
+                    Forms\Components\Tabs\Tab::make('English')
+                        ->schema([
+                            Forms\Components\Group::make()
+                                ->relationship('translationEn')
+                                ->schema([
+                                    Forms\Components\TextInput::make('title')->maxLength(255),
+                                    Forms\Components\TextInput::make('slug')->maxLength(255),
+                                    Forms\Components\Textarea::make('description')->rows(4),
+                                    Forms\Components\TextInput::make('image_alt')->maxLength(255),
+                                ]),
+                        ]),
+                ])
+                ->columnSpanFull(),
             Forms\Components\FileUpload::make('image')
                 ->imageEditor()
                 ->disk('public')->directory('experiences')->image()->optimize('webp')->maxImageWidth(1600),
-            Forms\Components\TextInput::make('image_alt')->maxLength(255),
             Forms\Components\Grid::make(2)->schema([
                 Forms\Components\Select::make('icon')
                     ->options(\App\Helpers\IconHelper::getHtmlOptions())

@@ -8,9 +8,12 @@
 ])
 
 <!DOCTYPE html>
-<html lang="id" class="scroll-smooth">
+<html lang="{{ app()->getLocale() }}" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
+    <link rel="alternate" hreflang="id" href="{{ \App\Helpers\LocaleHelper::switchUrl('id') }}">
+    <link rel="alternate" hreflang="en" href="{{ \App\Helpers\LocaleHelper::switchUrl('en') }}">
+    <link rel="alternate" hreflang="x-default" href="{{ url('/') }}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="theme-color" content="#171A11">

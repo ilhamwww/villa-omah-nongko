@@ -25,20 +25,6 @@ class JourneyPostResource extends Resource
     public static function form(Form $form): Form
     {
         return $form->schema([
-            Forms\Components\TextInput::make('title')
-                ->label('Judul')
-                ->required()
-                ->live(onBlur: true)
-                ->afterStateUpdated(function (Get $get, Set $set, ?string $old, ?string $state) {
-                    if (($get('slug') ?? '') !== Str::slug($old)) {
-                        return;
-                    }
-                    $set('slug', Str::slug($state));
-                }),
-            Forms\Components\TextInput::make('slug')
-                ->required()
-                ->unique(ignoreRecord: true)
-                ->helperText('Otomatis dibuat berdasarkan judul. Boleh dibiarkan atau diubah jika perlu.'),
             Forms\Components\Select::make('journey_category_id')
                 ->relationship('category', 'name')
                 ->label('Kategori')
@@ -50,9 +36,64 @@ class JourneyPostResource extends Resource
                 ->image()
                 ->optimize('webp')
                 ->maxImageWidth(1600),
-            Forms\Components\RichEditor::make('content')
-                ->label('Konten Artikel')
-                ->required(),
+            Forms\Components\Tabs::make('Journey Post Translations')
+                ->tabs([
+                    Forms\Components\Tabs\Tab::make('Bahasa Indonesia')
+                        ->schema([
+                            Forms\Components\TextInput::make('title')
+                                ->label('Judul')
+                                ->required()
+                                ->live(onBlur: true)
+                                ->afterStateUpdated(function (Get $get, Set $set, ?string $old, ?string $state) {
+                                    if (($get('slug') ?? '') !== Str::slug($old)) {
+                                        return;
+                                    }
+                                    $set('slug', Str::slug($state));
+                                }),
+                            Forms\Components\TextInput::make('slug')
+                                ->required()
+                                ->unique(ignoreRecord: true)
+                                ->helperText('Otomatis dibuat berdasarkan judul. Boleh dibiarkan atau diubah jika perlu.'),
+                            Forms\Components\RichEditor::make('content')
+                                ->label('Konten Artikel')
+                                ->required(),
+                            Forms\Components\Section::make('SEO Metadata')
+                                ->schema([
+                                    Forms\Components\TextInput::make('seo_title')->label('SEO Title'),
+                                    Forms\Components\Textarea::make('seo_description')->label('SEO Description')->rows(2),
+                                    Forms\Components\TextInput::make('seo_keywords')->label('SEO Keywords'),
+                                ])
+                                ->collapsible(),
+                        ]),
+                    Forms\Components\Tabs\Tab::make('English')
+                        ->schema([
+                            Forms\Components\Group::make()
+                                ->relationship('translationEn')
+                                ->schema([
+                                    Forms\Components\TextInput::make('title')
+                                        ->label('Title')
+                                        ->live(onBlur: true)
+                                        ->afterStateUpdated(function (Get $get, Set $set, ?string $old, ?string $state) {
+                                            if (($get('slug') ?? '') !== Str::slug($old)) {
+                                                return;
+                                            }
+                                            $set('slug', Str::slug($state));
+                                        }),
+                                    Forms\Components\TextInput::make('slug')
+                                        ->helperText('Automatically generated from title. Can be changed if needed.'),
+                                    Forms\Components\RichEditor::make('content')
+                                        ->label('Post Content'),
+                                    Forms\Components\Section::make('SEO Metadata')
+                                        ->schema([
+                                            Forms\Components\TextInput::make('seo_title')->label('SEO Title'),
+                                            Forms\Components\Textarea::make('seo_description')->label('SEO Description')->rows(2),
+                                            Forms\Components\TextInput::make('seo_keywords')->label('SEO Keywords'),
+                                        ])
+                                        ->collapsible(),
+                                ]),
+                        ]),
+                ])
+                ->columnSpanFull(),
             Forms\Components\DateTimePicker::make('published_at')
                 ->label('Tanggal Publikasi')
                 ->default(now()),
@@ -61,13 +102,6 @@ class JourneyPostResource extends Resource
                 ->options(['draft' => 'Draft', 'published' => 'Dipublikasikan'])
                 ->default('published')
                 ->required(),
-            Forms\Components\Section::make('SEO Metadata')
-                ->schema([
-                    Forms\Components\TextInput::make('seo_title')->label('SEO Title'),
-                    Forms\Components\Textarea::make('seo_description')->label('SEO Description')->rows(2),
-                    Forms\Components\TextInput::make('seo_keywords')->label('SEO Keywords'),
-                ])
-                ->collapsible(),
         ]);
     }
 

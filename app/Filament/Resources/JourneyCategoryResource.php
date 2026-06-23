@@ -25,21 +25,47 @@ class JourneyCategoryResource extends Resource
     public static function form(Form $form): Form
     {
         return $form->schema([
-            Forms\Components\TextInput::make('name')
-                ->label('Nama Kategori')
-                ->required()
-                ->live(onBlur: true)
-                ->afterStateUpdated(function (Get $get, Set $set, ?string $old, ?string $state) {
-                    if (($get('slug') ?? '') !== Str::slug($old)) {
-                        return;
-                    }
-                    $set('slug', Str::slug($state));
-                }),
-            Forms\Components\TextInput::make('slug')
-                ->required()
-                ->unique(ignoreRecord: true)
-                ->helperText('Otomatis dibuat berdasarkan nama kategori. Boleh dibiarkan atau diubah jika perlu.'),
-            Forms\Components\Textarea::make('description')->label('Deskripsi')->rows(2),
+            Forms\Components\Tabs::make('Journey Category Translations')
+                ->tabs([
+                    Forms\Components\Tabs\Tab::make('Bahasa Indonesia')
+                        ->schema([
+                            Forms\Components\TextInput::make('name')
+                                ->label('Nama Kategori')
+                                ->required()
+                                ->live(onBlur: true)
+                                ->afterStateUpdated(function (Get $get, Set $set, ?string $old, ?string $state) {
+                                    if (($get('slug') ?? '') !== Str::slug($old)) {
+                                        return;
+                                    }
+                                    $set('slug', Str::slug($state));
+                                }),
+                            Forms\Components\TextInput::make('slug')
+                                ->required()
+                                ->unique(ignoreRecord: true)
+                                ->helperText('Otomatis dibuat berdasarkan nama kategori. Boleh dibiarkan atau diubah jika perlu.'),
+                            Forms\Components\Textarea::make('description')->label('Deskripsi')->rows(2),
+                        ]),
+                    Forms\Components\Tabs\Tab::make('English')
+                        ->schema([
+                            Forms\Components\Group::make()
+                                ->relationship('translationEn')
+                                ->schema([
+                                    Forms\Components\TextInput::make('name')
+                                        ->label('Category Name')
+                                        ->live(onBlur: true)
+                                        ->afterStateUpdated(function (Get $get, Set $set, ?string $old, ?string $state) {
+                                            if (($get('slug') ?? '') !== Str::slug($old)) {
+                                                return;
+                                            }
+                                            $set('slug', Str::slug($state));
+                                        }),
+                                    Forms\Components\TextInput::make('slug')
+                                        ->helperText('Automatically generated from category name. Can be changed if needed.'),
+                                    Forms\Components\Textarea::make('description')->label('Description')->rows(2),
+                                ]),
+                        ]),
+                ])
+                ->columnSpanFull(),
         ]);
     }
 

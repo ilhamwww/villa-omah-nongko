@@ -19,13 +19,30 @@ class TestimonialResource extends Resource
     {
         return $form->schema([
             Forms\Components\TextInput::make('name')->required()->maxLength(255),
-            Forms\Components\TextInput::make('country_or_role')
-                ->helperText('e.g. Jakarta, Indonesia / Honeymoon couple')
-                ->maxLength(255),
+            Forms\Components\Tabs::make('Testimonial Translations')
+                ->tabs([
+                    Forms\Components\Tabs\Tab::make('Bahasa Indonesia')
+                        ->schema([
+                            Forms\Components\TextInput::make('country_or_role')
+                                ->helperText('e.g. Jakarta, Indonesia / Honeymoon couple')
+                                ->maxLength(255),
+                            Forms\Components\Textarea::make('content')->required()->rows(4),
+                        ]),
+                    Forms\Components\Tabs\Tab::make('English')
+                        ->schema([
+                            Forms\Components\Group::make()
+                                ->relationship('translationEn')
+                                ->schema([
+                                    Forms\Components\TextInput::make('country_or_role')
+                                        ->maxLength(255),
+                                    Forms\Components\Textarea::make('content')->rows(4),
+                                ]),
+                        ]),
+                ])
+                ->columnSpanFull(),
             Forms\Components\FileUpload::make('image')
                 ->imageEditor()
                 ->disk('public')->directory('testimonials')->image()->optimize('webp')->maxImageWidth(600),
-            Forms\Components\Textarea::make('content')->required()->rows(4),
             Forms\Components\TextInput::make('rating')->numeric()->minValue(1)->maxValue(5)->default(5),
             Forms\Components\TextInput::make('sort_order')->numeric()->default(0),
             Forms\Components\Toggle::make('is_active')->default(true),

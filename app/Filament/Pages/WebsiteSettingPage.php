@@ -26,7 +26,9 @@ class WebsiteSettingPage extends Page implements HasForms
     public function mount(): void
     {
         $this->record = WebsiteSetting::first() ?? WebsiteSetting::create([]);
-        $this->form->fill($this->record->toArray());
+        $data = $this->record->toArray();
+        $data['translationEn'] = $this->record->translationEn ? $this->record->translationEn->toArray() : [];
+        $this->form->fill($data);
     }
 
     public function form(Form $form): Form
@@ -42,8 +44,6 @@ class WebsiteSettingPage extends Page implements HasForms
                                     ->label('Website Name'),
                                 Forms\Components\TextInput::make('site_name')
                                     ->label('Site Name'),
-                                Forms\Components\TextInput::make('tagline')
-                                    ->label('Tagline'),
                                 Forms\Components\TextInput::make('email')
                                     ->email(),
                                 Forms\Components\TextInput::make('phone')
@@ -54,13 +54,36 @@ class WebsiteSettingPage extends Page implements HasForms
                                 Forms\Components\Textarea::make('whatsapp_default_message')
                                     ->label('WhatsApp Default Message')
                                     ->rows(2),
-                                Forms\Components\TextInput::make('location_name')
-                                    ->label('Location Name'),
-                                Forms\Components\Textarea::make('address')
-                                    ->rows(2),
                                 Forms\Components\TextInput::make('google_maps_url')
                                     ->label('Google Maps URL')
                                     ->url(),
+
+                                Forms\Components\Tabs::make('General Translations')
+                                    ->tabs([
+                                        Forms\Components\Tabs\Tab::make('Bahasa Indonesia')
+                                            ->schema([
+                                                Forms\Components\TextInput::make('tagline')
+                                                    ->label('Tagline'),
+                                                Forms\Components\TextInput::make('location_name')
+                                                    ->label('Location Name'),
+                                                Forms\Components\Textarea::make('address')
+                                                    ->rows(2),
+                                            ]),
+                                        Forms\Components\Tabs\Tab::make('English')
+                                            ->schema([
+                                                Forms\Components\Group::make()
+                                                    ->statePath('translationEn')
+                                                    ->schema([
+                                                        Forms\Components\TextInput::make('tagline')
+                                                            ->label('Tagline'),
+                                                        Forms\Components\TextInput::make('location_name')
+                                                            ->label('Location Name'),
+                                                        Forms\Components\Textarea::make('address')
+                                                            ->rows(2),
+                                                    ]),
+                                            ]),
+                                    ])
+                                    ->columnSpanFull(),
                             ]),
 
                         Forms\Components\Tabs\Tab::make('Branding')
@@ -126,18 +149,44 @@ class WebsiteSettingPage extends Page implements HasForms
                         Forms\Components\Tabs\Tab::make('SEO')
                             ->icon('heroicon-o-magnifying-glass')
                             ->schema([
-                                Forms\Components\TextInput::make('default_meta_title')
-                                    ->label('Default Meta Title'),
-                                Forms\Components\Textarea::make('default_meta_description')
-                                    ->label('Default Meta Description')
-                                    ->rows(2),
-                                Forms\Components\TextInput::make('default_keywords')
-                                    ->label('Default Keywords'),
-                                Forms\Components\TextInput::make('default_og_title')
-                                    ->label('Default OG Title'),
-                                Forms\Components\Textarea::make('default_og_description')
-                                    ->label('Default OG Description')
-                                    ->rows(2),
+                                Forms\Components\Tabs::make('SEO Translations')
+                                    ->tabs([
+                                        Forms\Components\Tabs\Tab::make('Bahasa Indonesia')
+                                            ->schema([
+                                                Forms\Components\TextInput::make('default_meta_title')
+                                                    ->label('Default Meta Title'),
+                                                Forms\Components\Textarea::make('default_meta_description')
+                                                    ->label('Default Meta Description')
+                                                    ->rows(2),
+                                                Forms\Components\TextInput::make('default_keywords')
+                                                    ->label('Default Keywords'),
+                                                Forms\Components\TextInput::make('default_og_title')
+                                                    ->label('Default OG Title'),
+                                                Forms\Components\Textarea::make('default_og_description')
+                                                    ->label('Default OG Description')
+                                                    ->rows(2),
+                                            ]),
+                                        Forms\Components\Tabs\Tab::make('English')
+                                            ->schema([
+                                                Forms\Components\Group::make()
+                                                    ->statePath('translationEn')
+                                                    ->schema([
+                                                        Forms\Components\TextInput::make('default_meta_title')
+                                                            ->label('Default Meta Title'),
+                                                        Forms\Components\Textarea::make('default_meta_description')
+                                                            ->label('Default Meta Description')
+                                                            ->rows(2),
+                                                        Forms\Components\TextInput::make('default_keywords')
+                                                            ->label('Default Keywords'),
+                                                        Forms\Components\TextInput::make('default_og_title')
+                                                            ->label('Default OG Title'),
+                                                        Forms\Components\Textarea::make('default_og_description')
+                                                            ->label('Default OG Description')
+                                                            ->rows(2),
+                                                    ]),
+                                            ]),
+                                    ])
+                                    ->columnSpanFull(),
                                 Forms\Components\FileUpload::make('default_og_image')
                                     ->label('Default OG Image')
                                     ->disk('public')
@@ -164,7 +213,16 @@ class WebsiteSettingPage extends Page implements HasForms
     public function save(): void
     {
         $data = $this->form->getState();
+        $translationData = $data['translationEn'] ?? [];
+        unset($data['translationEn']);
+
         $this->record->update($data);
+
+        if ($this->record->translationEn) {
+            $this->record->translationEn->update($translationData);
+        } else {
+            $this->record->translationEn()->create($translationData);
+        }
 
         Notification::make()
             ->title('Website settings saved successfully')

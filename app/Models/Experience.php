@@ -2,11 +2,21 @@
 
 namespace App\Models;
 
+use App\Models\Traits\HasEnglishTranslation;
 use Illuminate\Database\Eloquent\Model;
 
 class Experience extends Model
 {
+    use HasEnglishTranslation;
+
     protected $guarded = [];
+
+    protected $translatableAttributes = [
+        'title',
+        'slug',
+        'description',
+        'image_alt',
+    ];
 
     protected $casts = [
         'is_active' => 'boolean',

@@ -39,7 +39,7 @@ class JourneyController extends Controller
 
         $kategoriAktif = $request->query('category', 'all');
         if ($kategoriAktif !== 'all') {
-            $query->whereHas('category', fn ($q) => $q->where('slug', $kategoriAktif));
+            $query->whereHas('category', fn ($q) => $q->whereSlug($kategoriAktif));
         }
 
         $pencarian = trim((string) $request->query('q', ''));
@@ -103,7 +103,7 @@ class JourneyController extends Controller
         $model = JourneyPost::query()
             ->published()
             ->with('category')
-            ->where('slug', $slug)
+            ->whereSlug($slug)
             ->first();
 
         abort_if(! $model, 404);

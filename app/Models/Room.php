@@ -2,11 +2,25 @@
 
 namespace App\Models;
 
+use App\Models\Traits\HasEnglishTranslation;
 use Illuminate\Database\Eloquent\Model;
 
 class Room extends Model
 {
+    use HasEnglishTranslation;
+
     protected $guarded = [];
+
+    protected $translatableAttributes = [
+        'title',
+        'slug',
+        'bed_type',
+        'short_description',
+        'description',
+        'button_label',
+        'button_url',
+        'image_alt',
+    ];
 
     protected $casts = [
         'is_featured' => 'boolean',

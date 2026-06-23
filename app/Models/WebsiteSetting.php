@@ -2,12 +2,27 @@
 
 namespace App\Models;
 
+use App\Models\Traits\HasEnglishTranslation;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 
 class WebsiteSetting extends Model
 {
+    use HasEnglishTranslation;
+
     protected $guarded = [];
+
+    protected $translatableAttributes = [
+        'site_name',
+        'site_tagline',
+        'site_description',
+        'address',
+        'meta_title_default',
+        'meta_description_default',
+        'meta_keywords_default',
+        'footer_text',
+        'copyright_text',
+    ];
 
     protected $casts = [
         'links' => 'array',

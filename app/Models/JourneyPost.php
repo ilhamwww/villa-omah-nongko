@@ -2,13 +2,28 @@
 
 namespace App\Models;
 
+use App\Models\Traits\HasEnglishTranslation;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Str;
 
 class JourneyPost extends Model
 {
+    use HasEnglishTranslation;
+
     protected $guarded = [];
+
+    protected $translatableAttributes = [
+        'title',
+        'slug',
+        'content',
+        'excerpt',
+        'featured_image_alt',
+        'seo_title',
+        'seo_description',
+        'seo_keywords',
+        'faq_items',
+    ];
 
     protected $casts = [
         'published_at' => 'datetime',

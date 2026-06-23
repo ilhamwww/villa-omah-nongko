@@ -2,11 +2,19 @@
 
 namespace App\Models;
 
+use App\Models\Traits\HasEnglishTranslation;
 use Illuminate\Database\Eloquent\Model;
 
 class Feature extends Model
 {
+    use HasEnglishTranslation;
+
     protected $guarded = [];
+
+    protected $translatableAttributes = [
+        'title',
+        'description',
+    ];
 
     protected $casts = [
         'is_active' => 'boolean',
