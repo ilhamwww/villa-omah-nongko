@@ -39,4 +39,10 @@ class ExampleTest extends TestCase
         $responseId = $this->get('/id/invalid-page-does-not-exist');
         $responseId->assertRedirect(route('home.index', ['locale' => 'id']));
     }
+
+    public function test_journey_show_works(): void
+    {
+        $response = $this->get('/id/journey/keindahan-hidup-di-tengah-pedesaan-dan-sawah-sleman');
+        $response->assertStatus(200);
+    }
 }

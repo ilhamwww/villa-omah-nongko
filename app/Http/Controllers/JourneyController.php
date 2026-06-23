@@ -96,7 +96,7 @@ class JourneyController extends Controller
         ]);
     }
 
-    public function show(Request $request, string $slug)
+    public function show(Request $request, string $locale, string $slug)
     {
         $gambar = config('villa.images');
 
