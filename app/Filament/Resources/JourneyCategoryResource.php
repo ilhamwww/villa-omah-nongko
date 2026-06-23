@@ -34,9 +34,6 @@ class JourneyCategoryResource extends Resource
                                 ->required()
                                 ->live(onBlur: true)
                                 ->afterStateUpdated(function (Get $get, Set $set, ?string $old, ?string $state) {
-                                    if (($get('slug') ?? '') !== Str::slug($old)) {
-                                        return;
-                                    }
                                     $set('slug', Str::slug($state));
                                 }),
                             Forms\Components\TextInput::make('slug')
@@ -54,9 +51,6 @@ class JourneyCategoryResource extends Resource
                                         ->label('Category Name')
                                         ->live(onBlur: true)
                                         ->afterStateUpdated(function (Get $get, Set $set, ?string $old, ?string $state) {
-                                            if (($get('slug') ?? '') !== Str::slug($old)) {
-                                                return;
-                                            }
                                             $set('slug', Str::slug($state));
                                         }),
                                     Forms\Components\TextInput::make('slug')

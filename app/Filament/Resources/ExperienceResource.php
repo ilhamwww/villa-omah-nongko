@@ -79,7 +79,25 @@ class ExperienceResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\ImageColumn::make('image')->disk('public')->circular(),
-                Tables\Columns\TextColumn::make('title')->searchable()->sortable(),
+                Tables\Columns\TextColumn::make('title')
+                    ->label('Title (ID & EN)')
+                    ->formatStateUsing(function ($record) {
+                        $id = $record->getAttributes()['title'] ?? '-';
+                        $en = $record->translationEn?->title ?? '-';
+                        return new \Illuminate\Support\HtmlString(
+                            "<div style=\"display: flex; flex-direction: column; gap: 0.25rem;\">
+                                <span style=\"font-size: 0.875rem; font-weight: 500;\">{$id}</span>
+                                <span style=\"font-size: 0.75rem; color: #6b7280;\">EN: {$en}</span>
+                            </div>"
+                        );
+                    })
+                    ->searchable(query: function ($query, $search) {
+                        $query->where('title', 'like', "%{$search}%")
+                            ->orWhereHas('translationEn', function ($q) use ($search) {
+                                $q->where('title', 'like', "%{$search}%");
+                            });
+                    })
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('icon')
                     ->formatStateUsing(fn ($state) => new \Illuminate\Support\HtmlString(
                         $state 
@@ -94,6 +112,11 @@ class ExperienceResource extends Resource
             ->paginated(true)
             ->actions([Tables\Actions\EditAction::make()])
             ->bulkActions([Tables\Actions\BulkActionGroup::make([Tables\Actions\DeleteBulkAction::make()])]);
+    }
+
+    public static function getEloquentQuery(): \Illuminate\Database\Eloquent\Builder
+    {
+        return parent::getEloquentQuery()->with('translationEn');
     }
 
     public static function getPages(): array
