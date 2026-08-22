@@ -11,9 +11,7 @@ use App\Http\Controllers\SitemapController;
 Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap');
 Route::get('/robots.txt', [SitemapController::class, 'robots'])->name('robots');
 
-Route::get('/', function () {
-    return redirect('/id');
-});
+Route::get('/', [HomeController::class, 'default'])->name('home.default');
 
 Route::group(['prefix' => '{locale}', 'middleware' => ['locale']], function () {
     Route::get('/', [HomeController::class, 'index'])->name('home.index');

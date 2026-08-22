@@ -10,11 +10,15 @@ class ExampleTest extends TestCase
     /**
      * A basic test example.
      */
-    public function test_the_application_redirects_root_to_default_locale(): void
+    public function test_root_renders_the_indonesian_home_without_redirect(): void
     {
         $response = $this->get('/');
 
-        $response->assertRedirect('/id');
+        $response
+            ->assertOk()
+            ->assertHeaderMissing('Location');
+
+        $this->assertSame('id', app()->getLocale());
     }
 
     public function test_the_application_returns_a_successful_response_for_default_locale(): void
@@ -56,8 +60,8 @@ class ExampleTest extends TestCase
             ->assertOk()
             ->assertHeader('Content-Type', 'application/xml; charset=UTF-8')
             ->assertSee('<?xml version="1.0" encoding="UTF-8"?>', false)
-            ->assertSee(route('home.index', ['locale' => 'id']), false)
-            ->assertSee(route('home.index', ['locale' => 'en']), false)
+            ->assertSee('<loc>'.route('home.default').'</loc>', false)
+            ->assertSee('<loc>'.route('home.index', ['locale' => 'en']).'</loc>', false)
             ->assertSee(route('journey.index', ['locale' => 'id']), false)
             ->assertSee(route('journey.index', ['locale' => 'en']), false);
     }

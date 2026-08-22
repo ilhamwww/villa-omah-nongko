@@ -13,7 +13,9 @@ class SitemapController extends Controller
 
         foreach (['id', 'en'] as $locale) {
             $urls[] = [
-                'loc' => route('home.index', ['locale' => $locale]),
+                'loc' => $locale === 'id'
+                    ? route('home.default')
+                    : route('home.index', ['locale' => $locale]),
                 'priority' => '1.0',
                 'freq' => 'weekly',
             ];

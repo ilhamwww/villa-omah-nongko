@@ -8,9 +8,19 @@ use App\Models\Feature;
 use App\Models\Page;
 use App\Models\Room;
 use App\Models\Testimonial;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\URL;
 
 class HomeController extends Controller
 {
+    public function default()
+    {
+        App::setLocale('id');
+        URL::defaults(['locale' => 'id']);
+
+        return $this->index();
+    }
+
     public function index()
     {
         $gambar = config('villa.images');
