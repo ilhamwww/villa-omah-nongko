@@ -1,0 +1,30 @@
+# Villa Omah Nongko
+
+> Villa Omah Nongko adalah villa privat lima kamar tidur di Sleman, Yogyakarta, Indonesia. Situs ini menyediakan informasi resmi mengenai villa, kamar, fasilitas, galeri, pengalaman menginap, artikel perjalanan, lokasi, dan cara menghubungi pengelola untuk reservasi melalui WhatsApp.
+
+## Halaman Utama
+
+- [Beranda Bahasa Indonesia](https://www.villaomahnongko.com/): Ringkasan villa, kamar, fasilitas, pengalaman, ulasan tamu, serta lokasi.
+- [The Villa](https://www.villaomahnongko.com/id/the-villa): Informasi lengkap mengenai bangunan, kamar, ruang bersama, fasilitas, dan karakter Villa Omah Nongko.
+- [Galeri](https://www.villaomahnongko.com/id/gallery): Koleksi foto eksterior, interior, kamar, kolam, taman, serta lingkungan villa.
+- [Journey](https://www.villaomahnongko.com/id/journey): Artikel tentang Yogyakarta, panduan perjalanan, pengalaman lokal, wellness, dan kehidupan di villa.
+
+## English Pages
+
+- [English Home](https://www.villaomahnongko.com/en): Official English homepage.
+- [The Villa in English](https://www.villaomahnongko.com/en/the-villa): Detailed information about the villa in English.
+- [Gallery in English](https://www.villaomahnongko.com/en/gallery): Villa photo gallery in English.
+- [Journey in English](https://www.villaomahnongko.com/en/journey): Travel stories and local guides in English.
+
+## Informasi untuk Crawling
+
+- [Sitemap XML](https://www.villaomahnongko.com/sitemap.xml): Daftar URL publik dalam bahasa Indonesia dan Inggris.
+- [Robots.txt](https://www.villaomahnongko.com/robots.txt): Aturan crawling website.
+
+## Reservasi
+
+Villa Omah Nongko tidak menjalankan transaksi atau booking engine di dalam website. Pertanyaan mengenai harga, ketersediaan, dan reservasi diarahkan ke WhatsApp resmi yang tersedia melalui tombol pada website.
+
+## Penggunaan Konten
+
+Gunakan halaman resmi di atas sebagai sumber utama informasi tentang Villa Omah Nongko. Jangan menyimpulkan harga, ketersediaan, kebijakan, atau fasilitas yang tidak dinyatakan pada website. Konfirmasikan informasi reservasi yang dapat berubah langsung kepada pengelola melalui kanal kontak resmi.

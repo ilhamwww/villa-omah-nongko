@@ -10,6 +10,13 @@ use App\Http\Controllers\SitemapController;
 // SEO routes must be registered before the dynamic /{locale} route.
 Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap');
 Route::get('/robots.txt', [SitemapController::class, 'robots'])->name('robots');
+Route::get('/llms.txt', function () {
+    return response(
+        file_get_contents(public_path('llms.txt')),
+        200,
+        ['Content-Type' => 'text/plain; charset=UTF-8'],
+    );
+})->name('llms');
 
 Route::get('/', [HomeController::class, 'default'])->name('home.default');
 

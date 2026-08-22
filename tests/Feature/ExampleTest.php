@@ -60,9 +60,31 @@ class ExampleTest extends TestCase
             ->assertOk()
             ->assertHeader('Content-Type', 'application/xml; charset=UTF-8')
             ->assertSee('<?xml version="1.0" encoding="UTF-8"?>', false)
-            ->assertSee('<loc>'.route('home.default').'</loc>', false)
-            ->assertSee('<loc>'.route('home.index', ['locale' => 'en']).'</loc>', false)
+            ->assertSee('<loc>' . route('home.default') . '</loc>', false)
+            ->assertSee('<loc>' . route('home.index', ['locale' => 'en']) . '</loc>', false)
             ->assertSee(route('journey.index', ['locale' => 'id']), false)
             ->assertSee(route('journey.index', ['locale' => 'en']), false);
+    }
+
+    public function test_home_rating_has_permitted_accessible_image_semantics(): void
+    {
+        $response = $this->get('/');
+
+        $response
+            ->assertOk()
+            ->assertSee('role="img"', false)
+            ->assertSee('aria-label="5 dari 5 bintang"', false);
+    }
+
+    public function test_llms_file_has_a_markdown_heading_and_links(): void
+    {
+        $response = $this->get('/llms.txt');
+
+        $response
+            ->assertOk()
+            ->assertHeader('Content-Type', 'text/plain; charset=UTF-8')
+            ->assertSee('# Villa Omah Nongko', false)
+            ->assertSee('[Beranda Bahasa Indonesia](https://www.villaomahnongko.com/)', false)
+            ->assertSee('[Sitemap XML](https://www.villaomahnongko.com/sitemap.xml)', false);
     }
 }

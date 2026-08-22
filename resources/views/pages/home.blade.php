@@ -226,9 +226,12 @@
                             <span class="text-sm font-semibold text-text-main">{{ $ulasan['nama'] }},
                                 {{ $ulasan['asalNegara'] }}</span>
                         </figcaption>
-                        <div class="mt-2 flex gap-0.5 text-olive" aria-label="{{ $ulasan['bintang'] }} dari 5 bintang">
+                        <div class="mt-2 flex gap-0.5 text-olive" role="img"
+                            aria-label="{{ $ulasan['bintang'] }} dari 5 bintang">
                             @for($i = 0; $i < $ulasan['bintang']; $i++)
-                                <x-ui.icon name="star" class="w-4 h-4" />
+                                <span aria-hidden="true">
+                                    <x-ui.icon name="star" class="w-4 h-4" />
+                                </span>
                             @endfor
                         </div>
                     </figure>
