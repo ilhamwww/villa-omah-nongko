@@ -45,4 +45,20 @@ class ExampleTest extends TestCase
         $response = $this->get('/id/journey/keindahan-hidup-di-tengah-pedesaan-dan-sawah-sleman');
         $response->assertStatus(200);
     }
+
+    public function test_sitemap_returns_xml_for_both_locales(): void
+    {
+        $this->withoutExceptionHandling();
+
+        $response = $this->get('/sitemap.xml');
+
+        $response
+            ->assertOk()
+            ->assertHeader('Content-Type', 'application/xml; charset=UTF-8')
+            ->assertSee('<?xml version="1.0" encoding="UTF-8"?>', false)
+            ->assertSee(route('home.index', ['locale' => 'id']), false)
+            ->assertSee(route('home.index', ['locale' => 'en']), false)
+            ->assertSee(route('journey.index', ['locale' => 'id']), false)
+            ->assertSee(route('journey.index', ['locale' => 'en']), false);
+    }
 }

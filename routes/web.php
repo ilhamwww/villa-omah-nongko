@@ -7,6 +7,10 @@ use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\JourneyController;
 use App\Http\Controllers\SitemapController;
 
+// SEO routes must be registered before the dynamic /{locale} route.
+Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap');
+Route::get('/robots.txt', [SitemapController::class, 'robots'])->name('robots');
+
 Route::get('/', function () {
     return redirect('/id');
 });
@@ -27,10 +31,6 @@ Route::get('/the-villa', fn() => redirect('/id/the-villa', 301));
 Route::get('/gallery', fn() => redirect('/id/gallery', 301));
 Route::get('/journey', fn() => redirect('/id/journey', 301));
 Route::get('/journey/{slug}', fn($slug) => redirect('/id/journey/'.$slug, 301));
-
-// SEO
-Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap');
-Route::get('/robots.txt', [SitemapController::class, 'robots'])->name('robots');
 
 // Newsletter
 use App\Http\Controllers\NewsletterController;
