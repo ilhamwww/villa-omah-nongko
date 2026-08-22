@@ -28,6 +28,22 @@ class ExampleTest extends TestCase
         $response->assertStatus(200);
     }
 
+    public function test_home_language_switcher_uses_locale_paths_without_query_parameters(): void
+    {
+        $englishUrl = route('home.index', ['locale' => 'en']);
+        $indonesianUrl = route('home.default');
+
+        $this->get('/')
+            ->assertOk()
+            ->assertSee('href="'.$englishUrl.'"', false)
+            ->assertDontSee('?locale=en', false);
+
+        $this->get('/en')
+            ->assertOk()
+            ->assertSee('href="'.$indonesianUrl.'"', false)
+            ->assertDontSee('?locale=id', false);
+    }
+
     public function test_404_redirects_to_root(): void
     {
         $response = $this->get('/invalid-page-does-not-exist');
