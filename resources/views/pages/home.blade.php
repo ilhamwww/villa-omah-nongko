@@ -10,18 +10,25 @@
     $fotoAboutLarge = !empty($halaman?->content_blocks['about_large']) ? asset('storage/' . $halaman->content_blocks['about_large']) : $gambar['about_large'];
     $fotoAboutSmall = !empty($halaman?->content_blocks['about_small']) ? asset('storage/' . $halaman->content_blocks['about_small']) : $gambar['about_small'];
 
+    $homeUrl = app()->getLocale() === 'en'
+        ? route('home.index', ['locale' => 'en'])
+        : route('home.default');
+
     $schema = [
         '@context' => 'https://schema.org',
         '@type' => 'LodgingBusiness',
+        '@id' => $homeUrl . '#lodging',
         'name' => config('villa.identity.site_name'),
         'description' => config('villa.identity.description'),
-        'url' => route('home.index'),
+        'url' => $homeUrl,
         'image' => $fotoHero,
         'telephone' => config('villa.identity.phone'),
         'address' => [
             '@type' => 'PostalAddress',
+            'streetAddress' => config('villa.identity.address'),
             'addressLocality' => 'Sleman',
             'addressRegion' => 'Yogyakarta',
+            'postalCode' => '55584',
             'addressCountry' => 'ID',
         ],
         'amenityFeature' => collect($fasilitas)->map(fn($a) => [

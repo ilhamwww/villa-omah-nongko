@@ -77,7 +77,9 @@ class SitemapController extends Controller
         foreach ($urls as $url) {
             $xml .= "  <url>\n";
             $xml .= '    <loc>'.htmlspecialchars($url['loc'], ENT_XML1, 'UTF-8')."</loc>\n";
-            $xml .= '    <lastmod>'.($url['lastmod'] ?? now()->toDateString())."</lastmod>\n";
+            if (! empty($url['lastmod'])) {
+                $xml .= '    <lastmod>'.htmlspecialchars($url['lastmod'], ENT_XML1, 'UTF-8')."</lastmod>\n";
+            }
             $xml .= "    <changefreq>{$url['freq']}</changefreq>\n";
             $xml .= "    <priority>{$url['priority']}</priority>\n";
             $xml .= "  </url>\n";
